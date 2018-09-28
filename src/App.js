@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {WeatherWidget} from "./Components/WeatherWidget";
 import WeatherService from './WeatherService.js'
 
 class App extends Component {
@@ -11,7 +12,7 @@ class App extends Component {
     }
   }
   componentDidMount() {
-    const weatherService = new WeatherService(98004,"imperial", "yourApiKey");
+    const weatherService = new WeatherService(98004,"imperial", "4b04e27d6c643f40448d5ab0e2411300");
     weatherService.getCurrentWeather().then(temp => {
       this.setState({temp});
     })
@@ -28,6 +29,10 @@ class App extends Component {
         </header>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
+        </p>
+
+        <p>
+          <WeatherWidget numDays={5}/>
         </p>
       </div>
     );
