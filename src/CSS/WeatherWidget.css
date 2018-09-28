@@ -12,10 +12,3 @@ ul {
 li {
     float: left;
 }
-
-li a {
-    display: block;
-    text-align: center;
-    padding: 16px;
-    text-decoration: none;
-}

@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from 'prop-types'
+import '../CSS/DayTile.css'
 
 export class DayTile extends React.Component {
 
@@ -9,7 +10,9 @@ export class DayTile extends React.Component {
 
   render() {
     return (
-        <a>{this.props.day}</a>
+        <div id="tileDiv">
+          {this.props.day}
+        </div>
     )
   }
 }
