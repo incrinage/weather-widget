@@ -27,9 +27,6 @@ class App extends Component {
                 Current temp is : {this.state.temp}
             </div>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
 
         <p>
           <WeatherWidget numDays={5}/>
