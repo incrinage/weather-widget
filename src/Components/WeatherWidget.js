@@ -15,9 +15,9 @@ export class WeatherWidget extends React.Component {
 
     const numDays = this.props.numDays;
 
-    const items = Array(numDays).fill(this.days).map((el, i) =>
+    const items = Array(numDays).fill(this.days).map((days, i) =>
       <li style={{ float: "left" }} key={i}>
-        <a><DayTile day={el[i]} /></a>
+        <DayTile day={days[i]} />
       </li>
     );
 
@@ -33,4 +33,8 @@ export class WeatherWidget extends React.Component {
 
 WeatherWidget.prototypes = {
     numDays: PropTypes.number
+};
+
+WeatherWidget.defaultProps = {
+  numDays: 5
 };
