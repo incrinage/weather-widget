@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {WeatherWidget} from "./Components/WeatherWidget";
@@ -6,16 +6,16 @@ import WeatherService from './WeatherService.js'
 
 class App extends Component {
   constructor(props){
-      super(props)
+    super(props);
     this.state = {
         temp: ""
     }
   }
   componentDidMount() {
-    const weatherService = new WeatherService(98004,"imperial", "4b04e27d6c643f40448d5ab0e2411300");
-    weatherService.getCurrentWeather().then(temp => {
-      this.setState({temp});
-    })
+    const weatherService = new WeatherService(98004, "imperial", "yourApiKey");
+    weatherService.getCurrentWeather().then(weather => {
+      this.setState({temp: weather.temp});
+    });
   }
   render() {
     return (
