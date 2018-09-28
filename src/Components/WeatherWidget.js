@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../CSS/WeatherWidget.css'
+import {DayTile} from "./DayTile";
 
 export class WeatherWidget extends React.Component {
-  days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
+  days = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
 
   constructor(props) {
     super(props);
-    this.days = this.days.splice(0, this.props.numDays)
+    this.days = this.days.splice(0, this.props.numDays);
   }
 
   render() {
@@ -16,7 +17,7 @@ export class WeatherWidget extends React.Component {
 
     const items = Array(numDays).fill(this.days).map((el, i) =>
       <li style={{ float: "left" }} key={i}>
-        <a>{el[i]}</a>
+        <a><DayTile day={el[i]} /></a>
       </li>
     );
 
