@@ -8,7 +8,16 @@ export class WeatherWidget extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      temp : ""
+    };
     this.days = this.days.splice(0, this.props.numDays);
+  }
+
+  componentDidMount(){
+    this.props.forecast.then(weather=> {
+        this.setState({temp: weather.temp})
+    })
   }
 
   render() {
@@ -25,6 +34,7 @@ export class WeatherWidget extends React.Component {
         <div id="widgetDiv">
           <ul style={{ listStyleType: "none" }}>
             {items}
+            {this.state.temp? console.log(this.state.temp) : console.log("Loading...")}
           </ul>
         </div>
     );

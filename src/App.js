@@ -11,26 +11,15 @@ class App extends Component {
         temp: ""
     }
   }
-  componentDidMount() {
-    const weatherService = new WeatherService(98004, "imperial", "yourApiKey");
-    weatherService.getCurrentWeather().then(weather => {
-      this.setState({temp: weather.temp});
-    });
+
+  getForecast() {
+    const weatherService = new WeatherService(98004, "imperial", "4b04e27d6c643f40448d5ab0e2411300");
+    return weatherService.getCurrentWeather();
   }
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-            <div>
-                Current temp is : {this.state.temp}
-            </div>
-        </header>
-
-        <p>
-          <WeatherWidget numDays={5}/>
-        </p>
+        <WeatherWidget forecast={this.getForecast()} numDays={5}/>
       </div>
     );
   }
