@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {WeatherWidget} from "./Components/WeatherWidget";
 import WeatherService from './WeatherService.js'
@@ -12,25 +11,16 @@ class App extends Component {
     }
   }
   componentDidMount() {
-    const weatherService = new WeatherService(98004, "imperial", "yourApiKey");
+    const weatherService = new WeatherService(98004, "imperial", "4b04e27d6c643f40448d5ab0e2411300");
     weatherService.getCurrentWeather().then(weather => {
       this.setState({temp: weather.temp});
     });
   }
   render() {
+    console.log("Current temp is :" + this.state.temp);
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-            <div>
-                Current temp is : {this.state.temp}
-            </div>
-        </header>
-
-        <p>
           <WeatherWidget numDays={5}/>
-        </p>
       </div>
     );
   }

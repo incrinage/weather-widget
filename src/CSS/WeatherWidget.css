@@ -1,5 +1,7 @@
 #widgetDiv {
     border: solid black;
+    padding: 20px;
+    position: absolute;
 }
 
 ul {
@@ -10,5 +12,5 @@ ul {
 }
 
 li {
-    float: left;
+    padding: 4px;
 }
