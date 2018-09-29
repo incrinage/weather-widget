@@ -10,17 +10,15 @@ class App extends Component {
         temp: ""
     }
   }
-  componentDidMount() {
+
+  getForecast() {
     const weatherService = new WeatherService(98004, "imperial", "4b04e27d6c643f40448d5ab0e2411300");
-    weatherService.getCurrentWeather().then(weather => {
-      this.setState({temp: weather.temp});
-    });
+    return weatherService.getCurrentWeather();
   }
   render() {
-    console.log("Current temp is :" + this.state.temp);
     return (
       <div className="App">
-          <WeatherWidget numDays={5}/>
+        <WeatherWidget forecast={this.getForecast()} numDays={5}/>
       </div>
     );
   }
