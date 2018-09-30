@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../CSS/WeatherWidget.css'
 import {DayTile} from "./DayTile";
+import WeatherService from "../WeatherService";
 
 export class WeatherWidget extends React.Component {
   days = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
@@ -11,13 +12,16 @@ export class WeatherWidget extends React.Component {
     this.state = {
       temp : ""
     };
-    this.days = this.days.splice(0, this.props.numDays);
   }
 
   componentDidMount(){
-    this.props.forecast.then(weather=> {
-        this.setState({temp: weather.temp})
+    this.props.weatherService.getCurrentWeather().then(weather=> {
+      this.setState({temp: weather.temp})
     })
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return (nextProps.numDays !== this.props.numDays)
   }
 
   render() {
@@ -42,7 +46,8 @@ export class WeatherWidget extends React.Component {
 }
 
 WeatherWidget.prototypes = {
-    numDays: PropTypes.number
+  numDays: PropTypes.number,
+  weatherService: WeatherService
 };
 
 WeatherWidget.defaultProps = {
