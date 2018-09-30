@@ -10,6 +10,11 @@ class App extends Component {
     super(props);
   }
 
+  getForecast() {
+    const weatherService = new WeatherService(98004, "imperial", "4b04e27d6c643f40448d5ab0e2411300");
+    return weatherService.getCurrentWeather();
+  }
+
   render() {
     return (
       <div className="App">
