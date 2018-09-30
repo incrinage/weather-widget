@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../CSS/WeatherWidget.css'
 import {DayTile} from "./DayTile";
-import WeatherService from "../WeatherService";
+import WeatherService from "../Service/WeatherService";
 
 export class WeatherWidget extends React.Component {
   days = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
@@ -45,9 +45,9 @@ export class WeatherWidget extends React.Component {
   }
 }
 
-WeatherWidget.prototypes = {
+WeatherWidget.propTypes = {
   numDays: PropTypes.number,
-  weatherService: WeatherService
+  weatherService: PropTypes.instanceOf(WeatherService)
 };
 
 WeatherWidget.defaultProps = {

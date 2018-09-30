@@ -1,4 +1,4 @@
-class WeatherService {
+export class WeatherService {
   constructor(zipCode, units, apiKey) {
     this.zipCode = zipCode;
     this.units = units;
