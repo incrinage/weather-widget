@@ -1,18 +1,13 @@
 import React, {Component} from 'react';
 import './App.css';
 import {WeatherWidget} from "./Components/WeatherWidget";
-import WeatherService from './WeatherService.js'
+import {OpenWeather} from "./Service/OpenWeather";
 
 class App extends Component {
-  weatherService = new WeatherService(98004, "imperial", "4b04e27d6c643f40448d5ab0e2411300");
+  weatherService = new OpenWeather(98004, "imperial", "4b04e27d6c643f40448d5ab0e2411300");
 
   constructor(props){
     super(props);
-  }
-
-  getForecast() {
-    const weatherService = new WeatherService(98004, "imperial", "4b04e27d6c643f40448d5ab0e2411300");
-    return weatherService.getCurrentWeather();
   }
 
   render() {

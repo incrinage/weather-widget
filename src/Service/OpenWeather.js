@@ -1,8 +1,8 @@
-import WeatherService from "../WeatherService";
-import Weather from "../Weather";
+import WeatherService from "./WeatherService";
+import Weather from "../Models/Weather";
 import DateUtil from "../DateUtil";
 
-class OpenWeather extends WeatherService {
+export class OpenWeather extends WeatherService {
   constructor(zipCode, units, apiKey) {
     super(zipCode, units, apiKey);
     this.endpoint = 'http://api.openweathermap.org/data/2.5/';
