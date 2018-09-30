@@ -1,12 +1,11 @@
-import Weather from './Weather.js';
-import DateUtil from './DateUtil';
+import WeatherService from "../WeatherService";
+import Weather from "../Weather";
+import DateUtil from "../DateUtil";
 
-class WeatherService {
+class OpenWeather extends WeatherService {
   constructor(zipCode, units, apiKey) {
+    super(zipCode, units, apiKey);
     this.endpoint = 'http://api.openweathermap.org/data/2.5/';
-    this.zipCode = zipCode;
-    this.units = units;
-    this.apiKey = apiKey;
   }
 
   getCurrentWeather() {
@@ -16,7 +15,7 @@ class WeatherService {
       .then(weather => new Weather(DateUtil.epochSecondsToMs(weather.dt), weather.main.temp))
   }
 
-  getNoonFiveDayForcast() {
+  getNoonFiveDayForecast() {
     const query = `${this.endpoint}forecast?zip=${this.zipCode}&units=${this.units}&APPID=${this.apiKey}`
     return fetch(query)
       .then(response => response.json())
@@ -34,6 +33,5 @@ class WeatherService {
         return fiveDayNoonForecast;
       })
   }
-}
 
-export default WeatherService;
+}
