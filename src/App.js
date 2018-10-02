@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
-import {WeatherWidget} from "./Components/WeatherWidget";
-import {OpenWeather} from "./Service/OpenWeather";
+import WeatherWidget from "./Components/WeatherWidget";
+import OpenWeather from "./Service/OpenWeather";
 
 class App extends Component {
 
@@ -17,12 +17,13 @@ class App extends Component {
   }
 
   handleSubmit(event) {
-    alert(this.state.zipCode);
+    this.forceUpdate();
+    console.log(this.state.zipCode);
     event.preventDefault();
   }
 
   handleChange(event) {
-    this.setState({zipCode : event.target.value});
+    this.state.zipCode = parseInt(event.target.value);
   }
 
   render() {
@@ -33,11 +34,13 @@ class App extends Component {
             zipCode={this.state.zipCode}
         />
 
+        <div style={{position : "relative"}}>
         <form
             onSubmit={this.handleSubmit}
         >
-          <input type="text" value={this.state.zipCode} onChange={this.handleChange}/>
+          <input type="text"  onChange={this.handleChange}/>
         </form>
+        </div>
 
       </div>
     );

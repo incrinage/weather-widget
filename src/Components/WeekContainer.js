@@ -2,33 +2,34 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../CSS/WeatherContainer.css'
 import DayTile from "./DayTile";
-import WeatherModel from "../Models/WeatherModel";
+import DateUtil from "../DateUtil";
 
 class WeekContainer extends React.Component {
-  days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
-
-  constructor(props) {
-    super(props);
-
-    this.dayMap = this.days.reduce(function(result, day, index) {
-      result[index] = day;
-      return result;
-    }, {})
-  }
 
   render() {
-    const items = this.props.weatherModels
-        .map((weatherModel, index) =>
-            <li style={{float: "left"}} key={index}>
-              <DayTile day={this.dayMap[weatherModel.date.getDay()]}/>
-            </li>
-        );
+
+    let display;
+
+    if (this.props.weatherModels.length === 0) {
+      display = "Loading.....";
+    } else {
+      const items = this.props.weatherModels
+          .map((weatherModel, index) =>
+              <li style={{float: "left"}} key={index}>
+                <DayTile
+                    day={DateUtil.getWeekDay(weatherModel.date.getDay())}
+                    temp={weatherModel.temp}/>
+              </li>
+          );
+
+      display = <ul style={{ listStyleType: "none" }}>
+          {items}
+        </ul>
+    }
 
     return (
         <div id="widgetDiv">
-          <ul style={{ listStyleType: "none" }}>
-            {items}
-          </ul>
+          {display}
         </div>
     );
   }

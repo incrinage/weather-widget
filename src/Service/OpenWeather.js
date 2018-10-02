@@ -2,7 +2,7 @@ import WeatherService from "./WeatherService";
 import WeatherModel from "../Models/WeatherModel";
 import DateUtil from "../DateUtil";
 
-export class OpenWeather extends WeatherService {
+class OpenWeather extends WeatherService {
 
   units = "imperial";
 
@@ -39,3 +39,5 @@ export class OpenWeather extends WeatherService {
   }
 
 }
+
+export default OpenWeather;
