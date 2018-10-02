@@ -23,7 +23,7 @@ class App extends Component {
   }
 
   handleChange(event) {
-    this.state.zipCode = parseInt(event.target.value);
+    this.state.zipCode = event.target.value;
   }
 
   render() {

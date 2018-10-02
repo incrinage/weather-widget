@@ -50,7 +50,7 @@ class WeatherWidget extends React.Component {
 
 WeatherWidget.propTypes = {
   weatherService: PropTypes.instanceOf(WeatherService).isRequired,
-  zipCode: PropTypes.number
+  zipCode: PropTypes.string.isRequired
 };
 
 export default WeatherWidget;
