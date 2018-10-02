@@ -1,55 +1,56 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import '../CSS/WeatherWidget.css'
-import {DayTile} from "./DayTile";
+import PropTypes from "prop-types";
+
+import WeekContainer from "./WeekContainer";
 import WeatherService from "../Service/WeatherService";
 
-export class WeatherWidget extends React.Component {
-  days = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
+class WeatherWidget extends React.Component {
 
-  constructor(props) {
+  readyToUpdate = false;
+
+  constructor(props){
     super(props);
     this.state = {
-      temp : ""
+      weatherModels: []
     };
-  }
-
-  componentDidMount(){
-    this.props.weatherService.getCurrentWeather().then(weather=> {
-      this.setState({temp: weather.temp})
-    })
+    this.getDates = this.getDates.bind(this);
   }
 
   shouldComponentUpdate(nextProps) {
-    return (nextProps.numDays !== this.props.numDays)
+    return (nextProps.zipCode !== this.props.zipCode) || this.readyToUpdate
+  }
+
+  getDates() {
+    this.props.weatherService.getNoonFiveDayForecast(this.props.zipCode).then(models=> {
+      this.readyToUpdate = true;
+      this.setState({weatherModels: models});
+    });
   }
 
   render() {
 
-    const numDays = this.props.numDays;
+    setTimeout(this.getDates, 3000);
 
-    const items = Array(numDays).fill(this.days).map((days, i) =>
-      <li style={{ float: "left" }} key={i}>
-        <DayTile day={days[i]} />
-      </li>
-    );
+    let weekContainer;
+
+    if (this.readyToUpdate) {
+      weekContainer = <WeekContainer weatherModels={this.state.weatherModels}/>;
+      this.readyToUpdate = false; //contents updated, no longer up to date.
+    } else {
+      weekContainer = <WeekContainer weatherModels={[]}/>; //causes loading message in container
+    }
 
     return (
-        <div id="widgetDiv">
-          <ul style={{ listStyleType: "none" }}>
-            {items}
-            {this.state.temp? console.log(this.state.temp) : console.log("Loading...")}
-          </ul>
+        <div style={{position : "relative"}}>
+          {weekContainer}
         </div>
-    );
+    )
   }
 }
 
 WeatherWidget.propTypes = {
-  numDays: PropTypes.number,
-  weatherService: PropTypes.instanceOf(WeatherService)
+  weatherService: PropTypes.instanceOf(WeatherService).isRequired,
+  zipCode: PropTypes.string.isRequired
 };
 
-WeatherWidget.defaultProps = {
-  numDays: 5
-};
+export default WeatherWidget;

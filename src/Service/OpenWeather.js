@@ -1,22 +1,26 @@
 import WeatherService from "./WeatherService";
-import Weather from "../Models/Weather";
+import WeatherModel from "../Models/WeatherModel";
 import DateUtil from "../DateUtil";
 
-export class OpenWeather extends WeatherService {
-  constructor(zipCode, units, apiKey) {
-    super(zipCode, units, apiKey);
+class OpenWeather extends WeatherService {
+
+  units = "imperial";
+
+  constructor(apiKey) {
+    super();
+    this.apiKey=apiKey;
     this.endpoint = 'http://api.openweathermap.org/data/2.5/';
   }
 
-  getCurrentWeather() {
-    const query = `${this.endpoint}weather?zip=${this.zipCode}&units=${this.units}&APPID=${this.apiKey}`
+  getCurrentWeather(zipCode) {
+    const query = `${this.endpoint}weather?zip=${zipCode}&units=${this.units}&APPID=${this.apiKey}`
     return fetch(query)
       .then(response => response.json())
-      .then(weather => new Weather(DateUtil.epochSecondsToMs(weather.dt), weather.main.temp))
+      .then(weather => new WeatherModel(DateUtil.epochSecondsToMs(weather.dt), weather.main.temp))
   }
 
-  getNoonFiveDayForecast() {
-    const query = `${this.endpoint}forecast?zip=${this.zipCode}&units=${this.units}&APPID=${this.apiKey}`
+  getNoonFiveDayForecast(zipCode) {
+    const query = `${this.endpoint}forecast?zip=${zipCode}&units=${this.units}&APPID=${this.apiKey}`
     return fetch(query)
       .then(response => response.json())
       .then(fiveDayForecast => {
@@ -27,7 +31,7 @@ export class OpenWeather extends WeatherService {
           const NOON = 12;
           if (!daySet.has(date.getDay()) && date.getHours() >= NOON) {
             daySet.add(date.getDay());
-            fiveDayNoonForecast.push(new Weather(date, day.main.temp));
+            fiveDayNoonForecast.push(new WeatherModel(date, day.main.temp));
           }
         });
         return fiveDayNoonForecast;
@@ -35,3 +39,5 @@ export class OpenWeather extends WeatherService {
   }
 
 }
+
+export default OpenWeather;
