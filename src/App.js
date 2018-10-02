@@ -38,7 +38,7 @@ class App extends Component {
         <form
             onSubmit={this.handleSubmit}
         >
-          <input type="text"  onChange={this.handleChange}/>
+          <input type="text" value={this.state.zipCode}  onChange={this.handleChange}/>
         </form>
         </div>
 
