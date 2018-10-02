@@ -1,9 +1,4 @@
-export class WeatherService {
-  constructor(zipCode, units, apiKey) {
-    this.zipCode = zipCode;
-    this.units = units;
-    this.apiKey = apiKey;
-  }
+class WeatherService {
 
   getCurrentWeather() {
     return null;

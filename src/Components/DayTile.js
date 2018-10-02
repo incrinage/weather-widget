@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from 'prop-types'
 import '../CSS/DayTile.css'
 
-export class DayTile extends React.Component {
+class DayTile extends React.Component {
 
   constructor(props) {
     super(props);
@@ -20,3 +20,5 @@ export class DayTile extends React.Component {
 DayTile.proptypes = {
   day: PropTypes.string
 };
+
+export default DayTile;

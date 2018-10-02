@@ -1,55 +1,38 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import '../CSS/WeatherWidget.css'
-import {DayTile} from "./DayTile";
+import PropTypes from "prop-types";
+
+import WeekContainer from "./WeekContainer";
 import WeatherService from "../Service/WeatherService";
 
 export class WeatherWidget extends React.Component {
-  days = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
 
-  constructor(props) {
+  constructor(props){
     super(props);
     this.state = {
-      temp : ""
+      temp : "",
+      weatherModels: []
     };
-  }
 
-  componentDidMount(){
-    this.props.weatherService.getCurrentWeather().then(weather=> {
-      this.setState({temp: weather.temp})
+    this.props.weatherService.getNoonFiveDayForecast(this.props.zipCode).then(models=> {
+      console.log(models);
+      this.setState({weatherModels: models});
     })
   }
 
-  shouldComponentUpdate(nextProps) {
-    return (nextProps.numDays !== this.props.numDays)
-  }
+  /*shouldComponentUpdate(nextProps) {
+    return (nextProps.zipCode !== this.props.zipCode)
+  }*/
 
   render() {
-
-    const numDays = this.props.numDays;
-
-    const items = Array(numDays).fill(this.days).map((days, i) =>
-      <li style={{ float: "left" }} key={i}>
-        <DayTile day={days[i]} />
-      </li>
-    );
-
     return (
-        <div id="widgetDiv">
-          <ul style={{ listStyleType: "none" }}>
-            {items}
-            {this.state.temp? console.log(this.state.temp) : console.log("Loading...")}
-          </ul>
+        <div style={{position : "relative"}}>
+        <WeekContainer weatherModels={this.state.weatherModels}/>
         </div>
-    );
+    )
   }
 }
 
 WeatherWidget.propTypes = {
-  numDays: PropTypes.number,
-  weatherService: PropTypes.instanceOf(WeatherService)
-};
-
-WeatherWidget.defaultProps = {
-  numDays: 5
+  weatherService: PropTypes.instanceOf(WeatherService).isRequired,
+  zipCode: PropTypes.number
 };
