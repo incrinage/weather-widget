@@ -5,44 +5,44 @@ import WeekContainer from "./WeekContainer";
 import WeatherService from "../Service/WeatherService";
 
 class WeatherWidget extends React.Component {
-
-  readyToUpdate = false;
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      weatherModels: []
+      forecast: [],
+      fetchFailed: false,
+      isLoading: true,
+      zipCode: this.props.zipCode
     };
-    this.getDates = this.getDates.bind(this);
   }
 
-  shouldComponentUpdate(nextProps) {
-    return (nextProps.zipCode !== this.props.zipCode) || this.readyToUpdate
+  componentDidMount() {
+    this.getForecast();
   }
 
-  getDates() {
-    this.props.weatherService.getNoonFiveDayForecast(this.props.zipCode).then(models=> {
-      this.readyToUpdate = true;
-      this.setState({weatherModels: models});
+  shouldComponentUpdate(nextProps){
+    return nextProps.zipCode !== this.props.zipCode;
+  }
+
+  getForecast() {
+    console.log("in here")
+    this.props.weatherService.getNoonFiveDayForecast(this.props.zipCode).then(forecast => {
+      // if(this.state.zipCode !== this.props.zipCode)
+        this.setState({forecast: forecast, isLoading: false, fetchFailed: false});
+    }, () => {
+      //todo: handle errors here
+      this.setState({fetchFailed: true, isLoading: false})
     });
   }
 
   render() {
-
-    setTimeout(this.getDates, 3000);
-
-    let weekContainer;
-
-    if (this.readyToUpdate) {
-      weekContainer = <WeekContainer weatherModels={this.state.weatherModels}/>;
-      this.readyToUpdate = false; //contents updated, no longer up to date.
-    } else {
-      weekContainer = <WeekContainer weatherModels={[]}/>; //causes loading message in container
+    console.log("render weather widget");
+    this.getForecast()
+    if (this.state.fetchFailed) {
+      return (<div>Failed to get weather</div>)
     }
-
     return (
         <div style={{position : "relative"}}>
-          {weekContainer}
+          <WeekContainer isLoading={this.state.isLoading} weatherModels={this.state.forecast}/>
         </div>
     )
   }

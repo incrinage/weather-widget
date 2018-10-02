@@ -10,7 +10,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      zipCode : 98007
+      zipCode : "98007"
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -23,7 +23,7 @@ class App extends Component {
   }
 
   handleChange(event) {
-    this.state.zipCode = event.target.value;
+    this.setState({zipCode: event.target.value})
   }
 
   render() {

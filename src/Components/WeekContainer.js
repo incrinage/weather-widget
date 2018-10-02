@@ -11,15 +11,12 @@ import 'font-awesome/css/font-awesome.min.css';
 class WeekContainer extends React.Component {
 
   render() {
-
     let listItems;
-
-    if (this.props.weatherModels.length === 0) {
+    if (this.props.isLoading) {
       listItems =
           Array.from(Array(5).keys()).map((index) => <li style={{float: "left"}} key={index}>
             <i className="fa fa-circle-o-notch fa-spin" style={{fontSize: "24px"}}/>
           </li>)
-
     } else {
       listItems = this.props.weatherModels
           .map((weatherModel, index) =>
@@ -44,7 +41,7 @@ class WeekContainer extends React.Component {
 
 WeekContainer.propTypes = {
   weatherModels: PropTypes.arrayOf(
-      PropTypes.shape({date: PropTypes.instanceOf(Date), temp: PropTypes.number})
+    PropTypes.shape({date: PropTypes.instanceOf(Date), temp: PropTypes.number, icon: PropTypes.any})
   )
 };
 

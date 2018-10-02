@@ -13,6 +13,9 @@ class OpenWeather extends WeatherService {
   }
 
   getCurrentWeather(zipCode) {
+    if(!this.isZipCode(zipCode)){
+      return Promise.resolve([]);
+    }
     const query = `${this.endpoint}weather?zip=${zipCode}&units=${this.units}&APPID=${this.apiKey}`
     return fetch(query)
       .then(response => response.json())
@@ -20,8 +23,17 @@ class OpenWeather extends WeatherService {
   }
 
   getNoonFiveDayForecast(zipCode) {
-    const query = `${this.endpoint}forecast?zip=${zipCode}&units=${this.units}&APPID=${this.apiKey}`
+    if (!this.isZipCode(zipCode)) {
+      return Promise.resolve([]);
+    }
+    const query = `${this.endpoint}forecast?zip=${zipCode}&units=${this.units}&APPID=${this.apiKey}`;
     return fetch(query)
+      .then((response) => {
+        if(!response.ok) {
+          Promise.reject({status: response.status})
+        }
+        return response;
+      })
       .then(response => response.json())
       .then(fiveDayForecast => {
         const daySet = new Set();
@@ -38,6 +50,9 @@ class OpenWeather extends WeatherService {
       })
   }
 
+  isZipCode(zipCode) {
+    return typeof zipCode === "string" && zipCode.length === 5;
+  }
 }
 
 export default OpenWeather;
