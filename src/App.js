@@ -41,7 +41,6 @@ class App extends Component {
           <input type="text" value={this.state.zipCode}  onChange={this.handleChange}/>
         </form>
         </div>
-
       </div>
     );
   }

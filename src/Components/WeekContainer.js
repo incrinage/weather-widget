@@ -1,19 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../CSS/WeatherContainer.css'
+
 import DayTile from "./DayTile";
 import DateUtil from "../DateUtil";
+
+import '../CSS/WeatherContainer.css'
+import 'font-awesome/css/font-awesome.min.css';
+
 
 class WeekContainer extends React.Component {
 
   render() {
 
-    let display;
+    let listItems;
 
     if (this.props.weatherModels.length === 0) {
-      display = "Loading.....";
+      listItems =
+          Array(5).fill(<li style={{float: "left"}} >
+            <i className="fa fa-circle-o-notch fa-spin" style={{fontSize: "24px"}}/>
+          </li>)
+
     } else {
-      const items = this.props.weatherModels
+      listItems = this.props.weatherModels
           .map((weatherModel, index) =>
               <li style={{float: "left"}} key={index}>
                 <DayTile
@@ -21,15 +29,13 @@ class WeekContainer extends React.Component {
                     temp={weatherModel.temp}/>
               </li>
           );
-
-      display = <ul style={{ listStyleType: "none" }}>
-          {items}
-        </ul>
     }
 
     return (
         <div id="widgetDiv">
-          {display}
+          <ul style={{ listStyleType: "none" }}>
+           {listItems}
+          </ul>
         </div>
     );
   }

@@ -29,7 +29,7 @@ class WeatherWidget extends React.Component {
 
   render() {
 
-    setTimeout(this.getDates, 2000);
+    setTimeout(this.getDates, 3000);
 
     let weekContainer;
 
