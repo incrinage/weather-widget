@@ -15,6 +15,7 @@ class WeekContainer extends React.Component {
     let listItems;
 
     if (this.props.weatherModels.length === 0) {
+      let i = 0;
       listItems =
           Array(5).fill(<li style={{float: "left"}} >
             <i className="fa fa-circle-o-notch fa-spin" style={{fontSize: "24px"}}/>
