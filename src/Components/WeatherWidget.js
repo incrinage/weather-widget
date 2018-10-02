@@ -6,37 +6,38 @@ import WeatherService from "../Service/WeatherService";
 
 class WeatherWidget extends React.Component {
 
+  readyToUpdate = false;
+
   constructor(props){
     super(props);
     this.state = {
-      weatherModels: [],
-      upToDate: true
+      weatherModels: []
     };
-    this.getDates.bind(this);
+    this.getDates = this.getDates.bind(this);
   }
 
   shouldComponentUpdate(nextProps) {
-    return (nextProps.zipCode !== this.props.zipCode)
+    return (nextProps.zipCode !== this.props.zipCode) || this.readyToUpdate
   }
 
   getDates() {
     this.props.weatherService.getNoonFiveDayForecast(this.props.zipCode).then(models=> {
+      this.readyToUpdate = true;
       this.setState({weatherModels: models});
-      this.state.upToDate = true;
     });
   }
 
   render() {
 
-    //setTimeout(this.getDates, 10000);
-    this.getDates();
+    setTimeout(this.getDates, 2000);
+
     let weekContainer;
 
-    if (this.state.upToDate) {
+    if (this.readyToUpdate) {
       weekContainer = <WeekContainer weatherModels={this.state.weatherModels}/>;
+      this.readyToUpdate = false; //contents updated, no longer up to date.
     } else {
-      weekContainer = <WeekContainer weatherModels={[]}/>;
-      this.state.upToDate = false; //contents updated, no longer up to date.
+      weekContainer = <WeekContainer weatherModels={[]}/>; //causes loading message in container
     }
 
     return (
