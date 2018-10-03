@@ -27,7 +27,7 @@ class WeatherWidget extends React.Component {
   }
 
   getForecast() {
-    this.props.weatherService.getNoonFiveDayForecast(this.props.zipCode + "").then(forecast => {
+    this.props.weatherService.getNoonFiveDayForecast(this.props.zipCode).then(forecast => {
         this.isReady = true;
         this.fetchFailed = false;
         this.setState({forecast: forecast, isLoading: false});
