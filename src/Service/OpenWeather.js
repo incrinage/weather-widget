@@ -30,7 +30,7 @@ class OpenWeather extends WeatherService {
     return fetch(query)
       .then((response) => {
         if(!response.ok) {
-          throw new Error(response.status)
+          Promise.reject({status: response.status})
         }
         return response;
       })

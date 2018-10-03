@@ -10,31 +10,35 @@ class WeatherWidget extends React.Component {
     this.state = {
       forecast: [],
       isLoading: true,
-      fetchFailed: false
   };
+    this.fetchFailed = false;
     this.isReady = false;
     this.handleError = this.handleError.bind(this);
   }
 
   shouldComponentUpdate(nextProps){
     console.log(this.state);
-    return (nextProps.zipCode !== this.props.zipCode) || this.isReady || this.state.fetchFailed;
+    return (nextProps.zipCode !== this.props.zipCode) || this.isReady || this.fetchFailed;
   }
 
   handleError(error){
+    console.log(error)
     //todo: handle errors here
-    this.setState({fetchFailed:true, isLoading: false})
+    this.fetchFailed = true;
+    this.setState({ isLoading: false})
   }
 
   getForecast() {
     this.props.weatherService.getNoonFiveDayForecast(this.props.zipCode).then(forecast => {
         this.isReady = true;
-        this.setState({forecast: forecast, isLoading: false, fetchFailed: false});
+        this.fetchFailed = false;
+        this.setState({forecast: forecast, isLoading: false});
     }, this.handleError);
   }
 
   render() {
-    if (this.state.fetchFailed) {
+    if (this.fetchFailed) {
+      this.fetchFailed = false;
       return (<div>Failed to get weather</div>)
     }
     if(this.isReady){
