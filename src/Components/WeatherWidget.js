@@ -9,36 +9,41 @@ class WeatherWidget extends React.Component {
     super(props);
     this.state = {
       forecast: [],
-      fetchFailed: false,
       isLoading: true,
-      zipCode: this.props.zipCode
-    };
-  }
-
-  componentDidMount() {
-    this.getForecast();
+      fetchFailed: false
+  };
+    this.isReady = false;
+    this.handleError = this.handleError.bind(this);
   }
 
   shouldComponentUpdate(nextProps){
-    return nextProps.zipCode !== this.props.zipCode;
+    console.log(this.state);
+    return (nextProps.zipCode !== this.props.zipCode) || this.isReady || this.state.fetchFailed;
+  }
+
+  handleError(error){
+    //todo: handle errors here
+    console.log(this.state.fetchFailed)
+
+    this.setState({fetchFailed:true, isLoading: false})
+    console.log(this.state.fetchFailed)
   }
 
   getForecast() {
-    console.log("in here")
     this.props.weatherService.getNoonFiveDayForecast(this.props.zipCode).then(forecast => {
-      // if(this.state.zipCode !== this.props.zipCode)
+        this.isReady = true;
         this.setState({forecast: forecast, isLoading: false, fetchFailed: false});
-    }, () => {
-      //todo: handle errors here
-      this.setState({fetchFailed: true, isLoading: false})
-    });
+    }, this.handleError);
   }
 
   render() {
-    console.log("render weather widget");
-    this.getForecast()
     if (this.state.fetchFailed) {
       return (<div>Failed to get weather</div>)
+    }
+    if(this.isReady){
+      this.isReady = false;
+    } else {
+      this.getForecast();
     }
     return (
         <div style={{position : "relative"}}>
