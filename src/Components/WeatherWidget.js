@@ -23,10 +23,7 @@ class WeatherWidget extends React.Component {
 
   handleError(error){
     //todo: handle errors here
-    console.log(this.state.fetchFailed)
-
     this.setState({fetchFailed:true, isLoading: false})
-    console.log(this.state.fetchFailed)
   }
 
   getForecast() {
