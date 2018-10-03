@@ -5,44 +5,46 @@ import WeekContainer from "./WeekContainer";
 import WeatherService from "../Service/WeatherService";
 
 class WeatherWidget extends React.Component {
-
-  readyToUpdate = false;
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      weatherModels: []
-    };
-    this.getDates = this.getDates.bind(this);
+      forecast: [],
+      isLoading: true,
+      fetchFailed: false
+  };
+    this.isReady = false;
+    this.handleError = this.handleError.bind(this);
   }
 
-  shouldComponentUpdate(nextProps) {
-    return (nextProps.zipCode !== this.props.zipCode) || this.readyToUpdate
+  shouldComponentUpdate(nextProps){
+    console.log(this.state);
+    return (nextProps.zipCode !== this.props.zipCode) || this.isReady || this.state.fetchFailed;
   }
 
-  getDates() {
-    this.props.weatherService.getNoonFiveDayForecast(this.props.zipCode).then(models=> {
-      this.readyToUpdate = true;
-      this.setState({weatherModels: models});
-    });
+  handleError(error){
+    //todo: handle errors here
+    this.setState({fetchFailed:true, isLoading: false})
+  }
+
+  getForecast() {
+    this.props.weatherService.getNoonFiveDayForecast(this.props.zipCode).then(forecast => {
+        this.isReady = true;
+        this.setState({forecast: forecast, isLoading: false, fetchFailed: false});
+    }, this.handleError);
   }
 
   render() {
-
-    setTimeout(this.getDates, 3000);
-
-    let weekContainer;
-
-    if (this.readyToUpdate) {
-      weekContainer = <WeekContainer weatherModels={this.state.weatherModels}/>;
-      this.readyToUpdate = false; //contents updated, no longer up to date.
-    } else {
-      weekContainer = <WeekContainer weatherModels={[]}/>; //causes loading message in container
+    if (this.state.fetchFailed) {
+      return (<div>Failed to get weather</div>)
     }
-
+    if(this.isReady){
+      this.isReady = false;
+    } else {
+      this.getForecast();
+    }
     return (
         <div style={{position : "relative"}}>
-          {weekContainer}
+          <WeekContainer isLoading={this.state.isLoading} weatherModels={this.state.forecast}/>
         </div>
     )
   }

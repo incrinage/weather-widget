@@ -5,25 +5,25 @@ import OpenWeather from "./Service/OpenWeather";
 
 class App extends Component {
 
-  weatherService = new OpenWeather("4b04e27d6c643f40448d5ab0e2411300");
 
   constructor(props){
     super(props);
     this.state = {
-      zipCode : 98007
+      zipCode : "98007"
     };
+    this.weatherService = new OpenWeather("4b04e27d6c643f40448d5ab0e2411300");
+    this.zipCode = "";
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleSubmit(event) {
-    this.forceUpdate();
-    console.log(this.state.zipCode);
+    this.setState({zipCode: this.zipCode});
     event.preventDefault();
   }
 
   handleChange(event) {
-    this.state.zipCode = event.target.value;
+    this.zipCode = event.target.value;
   }
 
   render() {
@@ -33,7 +33,6 @@ class App extends Component {
             weatherService={this.weatherService}
             zipCode={this.state.zipCode}
         />
-
         <div style={{position : "relative"}}>
         <form
             onSubmit={this.handleSubmit}
