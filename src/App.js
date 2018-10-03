@@ -12,7 +12,7 @@ class App extends Component {
       zipCode : "98007"
     };
     this.weatherService = new OpenWeather("4b04e27d6c643f40448d5ab0e2411300");
-    this.zipCode = "";
+    this.zipCode = "98007";
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
