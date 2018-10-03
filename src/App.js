@@ -8,11 +8,12 @@ class App extends Component {
 
   constructor(props){
     super(props);
+    this.zipCode = "98007";
     this.state = {
-      zipCode : "98007"
+      zipCode : this.zipCode
     };
     this.weatherService = new OpenWeather("4b04e27d6c643f40448d5ab0e2411300");
-    this.zipCode = "98007";
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
