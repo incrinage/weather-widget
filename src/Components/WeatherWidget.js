@@ -17,12 +17,10 @@ class WeatherWidget extends React.Component {
   }
 
   shouldComponentUpdate(nextProps){
-    console.log(this.state);
     return (nextProps.zipCode !== this.props.zipCode) || this.isReady || this.fetchFailed;
   }
 
   handleError(error){
-    console.log(error)
     //todo: handle errors here
     this.fetchFailed = true;
     this.setState({ isLoading: false})
