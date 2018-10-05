@@ -7,7 +7,6 @@ import DateUtil from "../DateUtil";
 import '../CSS/WeatherContainer.css'
 import 'font-awesome/css/font-awesome.min.css';
 
-
 class WeekContainer extends React.Component {
 
   render() {
