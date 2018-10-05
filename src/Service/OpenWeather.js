@@ -13,7 +13,7 @@ class OpenWeather extends WeatherService {
   }
 
   getCurrentWeather(zipCode) {
-    if(!OpenWeather.isZipCode(zipCode)){
+    if(!this.isZipCode(zipCode)){
       return Promise.resolve([]);
     }
     const query = `${this.endpoint}weather?zip=${zipCode}&units=${this.units}&APPID=${this.apiKey}`
