@@ -83,6 +83,8 @@ class WeatherWidget extends React.Component {
 
   render() {
 
+    console.log("rendering");
+
     if (this.fetchFailed) {
       this.fetchFailed = false;
       return (<div> {this.renderZipCode()} Failed to get weather</div>)
