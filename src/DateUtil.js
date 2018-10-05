@@ -1,5 +1,5 @@
 export default class DateUtil {
-  static days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"].reduce(function(result, day, index) {
+  static days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].reduce(function(result, day, index) {
     result[index] = day;
     return result;
   }, {});

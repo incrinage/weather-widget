@@ -14,13 +14,13 @@ class WeekContainer extends React.Component {
     let listItems;
     if (this.props.isLoading) {
       listItems =
-          Array.from(Array(5).keys()).map((index) => <li style={{float: "left"}} key={index}>
-            <i className="fa fa-circle-o-notch fa-spin" style={{fontSize: "24px"}}/>
+          Array.from(Array(5).keys()).map((index) => <li key={index}>
+            <i className="fa fa-circle-o-notch fa-spin"/>
           </li>)
     } else {
       listItems = this.props.weatherModels
           .map((weatherModel, index) =>
-              <li style={{float: "left"}} key={index}>
+              <li key={index}>
                 <DayTile
                     day={DateUtil.getWeekDay(weatherModel.date.getDay())}
                     temp={weatherModel.temp}/>
@@ -29,8 +29,8 @@ class WeekContainer extends React.Component {
     }
 
     return (
-        <div id="widgetDiv">
-          <ul style={{ listStyleType: "none" }}>
+        <div className="widget">
+          <ul>
            {listItems}
           </ul>
         </div>

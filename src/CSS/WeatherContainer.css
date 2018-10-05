@@ -1,16 +1,14 @@
-#widgetDiv {
-    border: solid black;
-    padding: 20px;
-    position: absolute;
+.widget {
+    display: flex;
+    justify-content: center;
 }
 
-ul {
+.widget ul {
     list-style-type: none;
-    margin: 0;
-    padding: 0;
     overflow: hidden;
 }
 
-li {
-    margin: 4px;
+.widget li {
+    margin: 10px;
+    float:left;
 }

@@ -6,11 +6,14 @@ class DayTile extends React.Component {
 
   render() {
     return (
-        <div id="tileDiv">
-          {this.props.day}
+      <div>
+      <div className="day-tile">
+
+        <span> <div className="day-tile__day">{this.props.day}</div></span>
           <p>Picture placeholder</p>
-          {this.props.temp}
+        <p>{this.props.temp}</p>
         </div>
+      </div>
     )
   }
 }

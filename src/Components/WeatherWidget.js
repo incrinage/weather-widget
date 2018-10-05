@@ -41,13 +41,11 @@ class WeatherWidget extends React.Component {
     }
     if(this.isReady){
       this.isReady = false;
-    } else {
+    } else  {
       this.getForecast();
     }
     return (
-        <div style={{position : "relative"}}>
           <WeekContainer isLoading={this.state.isLoading} weatherModels={this.state.forecast}/>
-        </div>
     )
   }
 }
