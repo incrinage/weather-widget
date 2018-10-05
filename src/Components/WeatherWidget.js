@@ -85,7 +85,7 @@ class WeatherWidget extends React.Component {
     if (this.isReady) {
       container = <WeekContainer weatherModels={this.state.forecast}/>;
     } else {
-      setTimeout(this.getForecast.bind(this), 2000);
+      setTimeout(this.getForecast.bind(this), 500);
       container = this.renderLoading();
     }
 
