@@ -4,7 +4,9 @@ import PropTypes from "prop-types";
 import WeekContainer from "./WeekContainer";
 import WeatherService from "../Service/WeatherService";
 
+import '../CSS/SliderBar.css'
 import '../CSS/WeatherContainer.css'
+
 import 'font-awesome/css/font-awesome.min.css';
 
 class WeatherWidget extends React.Component {
@@ -94,6 +96,10 @@ class WeatherWidget extends React.Component {
           {this.renderZipCode()}
 
           {this.state.container}
+
+          <div className="slidecontainer">
+            <input type="range" min="1" max="100" value="50" className="slider" id="myRange"/>
+          </div>
 
         </div>
     );
