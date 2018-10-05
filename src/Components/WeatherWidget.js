@@ -4,57 +4,109 @@ import PropTypes from "prop-types";
 import WeekContainer from "./WeekContainer";
 import WeatherService from "../Service/WeatherService";
 
+import '../CSS/WeatherContainer.css'
+import 'font-awesome/css/font-awesome.min.css';
+
 class WeatherWidget extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       forecast: [],
-      isLoading: true,
-  };
-    this.fetchFailed = false;
+      zipCode : "98007"
+    };
+
     this.isReady = false;
+    this.fetchFailed = false;
+
     this.handleError = this.handleError.bind(this);
+
+    this.handleZipCodeChange = this.handleZipCodeChange.bind(this);
+    this.handleZipCodeSubmit = this.handleZipCodeSubmit.bind(this);
   }
 
-  shouldComponentUpdate(nextProps){
-    return (nextProps.zipCode !== this.props.zipCode) || this.isReady || this.fetchFailed;
+  handleZipCodeSubmit(event) {
+    this.setState({zipCode: this.zipCode});
+    event.preventDefault();
+  }
+
+  handleZipCodeChange(event) {
+    this.zipCode = event.target.value;
+  }
+
+  renderZipCode() {
+    return <div style={{position : "relative"}}>
+      <form
+          onSubmit={this.handleZipCodeSubmit}
+      >
+        <input type="text"  defaultValue={this.state.zipCode} onChange={this.handleZipCodeChange}/>
+      </form>
+    </div>;
+  }
+
+  renderLoading() {
+    return (
+            <div id="containerDiv">
+              <ul style={{ listStyleType: "none" }}>
+                {
+                  Array.from(Array(5).keys()).map((index) => <li style={{float: "left"}} key={index}>
+                    <i className="fa fa-circle-o-notch fa-spin" style={{fontSize: "24px"}}/>
+                  </li>)
+                }
+              </ul>
+            </div>
+        );
+  }
+
+  getForecast() {
+    this.props.weatherService.getNoonFiveDayForecast(this.state.zipCode).then(forecast => {
+      this.isReady = true;
+      this.fetchFailed = false;
+      this.setState({forecast: forecast});
+    }, this.handleError);
   }
 
   handleError(error){
     //todo: handle errors here
     this.fetchFailed = true;
-    this.setState({ isLoading: false})
-  }
-
-  getForecast() {
-    this.props.weatherService.getNoonFiveDayForecast(this.props.zipCode).then(forecast => {
-        this.isReady = true;
-        this.fetchFailed = false;
-        this.setState({forecast: forecast, isLoading: false});
-    }, this.handleError);
+    this.forceUpdate();
   }
 
   render() {
+
     if (this.fetchFailed) {
       this.fetchFailed = false;
-      return (<div>Failed to get weather</div>)
-    }
-    if(this.isReady){
       this.isReady = false;
-    } else {
-      this.getForecast();
+      return (<div> {this.renderZipCode()} Failed to get weather</div>)
     }
-    return (
+
+    let container;
+
+    if (this.isReady) {
+      container = <WeekContainer weatherModels={this.state.forecast}/>;
+    } else {
+      setTimeout(this.getForecast.bind(this), 2000);
+      container = this.renderLoading();
+    }
+
+    const toRender = (
         <div style={{position : "relative"}}>
-          <WeekContainer isLoading={this.state.isLoading} weatherModels={this.state.forecast}/>
+
+          {this.renderZipCode()}
+
+          {container}
+
         </div>
-    )
+    );
+
+    this.isReady = false;
+
+    return toRender;
   }
 }
 
 WeatherWidget.propTypes = {
-  weatherService: PropTypes.instanceOf(WeatherService).isRequired,
-  zipCode: PropTypes.string.isRequired
+  weatherService: PropTypes.instanceOf(WeatherService).isRequired
 };
 
 export default WeatherWidget;
