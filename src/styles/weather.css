@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 3em;
 }
 
 .widget {
@@ -23,4 +24,8 @@
 
 .weather-label {
    padding-left: 25px;
+}
+
+.weather-input {
+    width: 100px;
 }

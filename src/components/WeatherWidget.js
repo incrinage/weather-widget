@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import WeekContainer from "./WeekContainer";
 import WeatherService from "../service/WeatherService";
 
-import '../styles/weather.css'
+import '../styles/weather.css';
+import '../styles/tile.css';
 import 'font-awesome/css/font-awesome.min.css';
 
 class WeatherWidget extends React.Component {
@@ -46,14 +47,14 @@ class WeatherWidget extends React.Component {
       <form
           onSubmit={this.handleZipCodeSubmit}
       >
-        <input type="text"  defaultValue={this.zipCode} onChange={this.handleZipCodeChange}/>
+        <input className="tile tile-input weather-input" type="text" defaultValue={this.zipCode} onChange={this.handleZipCodeChange}/>
       </form>
     </div>;
   }
 
   renderLoading() {
     return (
-            <div id="containerDiv">
+            <div id="containerDiv" className="weather-widget">
               <ul style={{ listStyleType: "none" }}>
                 {
                   Array.from(Array(5).keys()).map((index) => <li style={{float: "left"}} key={index}>
