@@ -1,5 +1,5 @@
 import WeatherService from "./WeatherService";
-import WeatherModel from "../Models/WeatherModel";
+import WeatherModel from "../models/WeatherModel";
 import DateUtil from "../DateUtil";
 
 class OpenWeather extends WeatherService {
@@ -32,10 +32,10 @@ class OpenWeather extends WeatherService {
         if(!response.ok) {
           throw new Error(response.status)
         }
-        return response;
+        return response.json();
       })
-      .then(response => response.json())
       .then(fiveDayForecast => {
+        console.log(fiveDayForecast);
         const daySet = new Set();
         const fiveDayNoonForecast = [];
         fiveDayForecast.list.forEach(day => {
