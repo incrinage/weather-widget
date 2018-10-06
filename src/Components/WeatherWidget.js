@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import WeekContainer from "./WeekContainer";
 import WeatherService from "../Service/WeatherService";
 
-import '../CSS/WeatherContainer.css'
+import '../CSS/WeatherWidget.css'
 import 'font-awesome/css/font-awesome.min.css';
 
 class WeatherWidget extends React.Component {
@@ -88,12 +88,9 @@ class WeatherWidget extends React.Component {
     }
 
     return (
-        <div style={{position: "relative"}}>
-
+        <div className="weather-widget">
           {this.renderZipCode()}
-
           {this.state.container}
-
         </div>
     );
   }

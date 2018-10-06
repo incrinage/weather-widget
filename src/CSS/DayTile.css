@@ -12,6 +12,7 @@
     width:140px;
     box-shadow: 3px 4px 5px lightgray;
     font-family: unset;
+    margin: 1em;
 }
 
 .day-tile .day-tile__day {
