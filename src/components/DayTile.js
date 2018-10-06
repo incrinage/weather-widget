@@ -14,7 +14,7 @@ class DayTile extends React.Component {
         </span>
         <div className="weather-display">
           <div className="weather-label weather-label__font" >{this.props.temp}</div>
-          <img src={day} alt="sunny"/>
+          <img src={this.props.icon} alt="sunny"/>
         </div>
       </div>
     )
