@@ -8,25 +8,6 @@
     text-align: center;
 }
 
-.label {
-    background-color: #b8cedb;
-    width: 80px;
-    margin-top:-2px;
-    box-shadow: 0px 2px 2px 0px #8ea2af;
-}
-
-.label__margin-top--fold {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-top: 2px solid #e6e0e03d;
-}
-
-.label__font {
-    font-family: "Arial", serif;
-    font-size: 12px;
-    font-weight: bold;
-}
-
 .tile {
     border-top: 2px solid #a5adb13b;
     border-bottom: solid #e6e0e0;
@@ -34,4 +15,8 @@
     background-color: #fbfbfb;
     border-radius: .2em;
     box-shadow: 3px 4px 5px lightgray;
+}
+
+.icon {
+    padding: 1em;
 }

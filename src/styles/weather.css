@@ -9,3 +9,9 @@
     justify-content: space-around;
     padding: 1em;
 }
+
+.weather-display {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

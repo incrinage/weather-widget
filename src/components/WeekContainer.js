@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import DayTile from "./DayTile";
 import DateUtil from "../DateUtil";
 
-import '../CSS/WeatherWidget.css'
+import '../styles/weather.css'
 import 'font-awesome/css/font-awesome.min.css';
 
 class WeekContainer extends React.Component {

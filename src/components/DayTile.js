@@ -1,6 +1,8 @@
 import React from "react"
 import PropTypes from 'prop-types'
-import '../CSS/DayTile.css'
+import '../styles/tile.css'
+import '../styles/label.css'
+import day from '../svg/day.svg'
 
 class DayTile extends React.Component {
 
@@ -10,8 +12,10 @@ class DayTile extends React.Component {
         <span>
           <div className="label label__margin-top--fold label__font">{this.props.day}</div>
         </span>
-        <p>Picture placeholder</p>
-        <p>{this.props.temp}</p>
+        <div className="weather-display">
+          <div className="weather-label weather-label__font" >{this.props.temp}</div>
+          <img src={day} alt="sunny"/>
+        </div>
       </div>
     )
   }
