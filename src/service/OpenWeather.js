@@ -43,7 +43,7 @@ class OpenWeather extends WeatherService {
           const NOON = 12;
           if (!daySet.has(date.getDay()) && date.getHours() >= NOON) {
             daySet.add(date.getDay());
-            fiveDayNoonForecast.push(new WeatherModel(date, day.main.temp));
+            fiveDayNoonForecast.push(new WeatherModel(date, day.main.temp, day.weather[0].id));
           }
         });
         return fiveDayNoonForecast;
