@@ -2,7 +2,6 @@ import React from "react"
 import PropTypes from 'prop-types'
 import '../styles/tile.css'
 import '../styles/label.css'
-import day from '../svg/day.svg'
 
 class DayTile extends React.Component {
 
