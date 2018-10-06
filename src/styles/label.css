@@ -16,12 +16,3 @@
     font-size: 12px;
     font-weight: bold;
 }
-
-.weather-label__font {
-    font-size: 20px;
-    font-family: Arial, serif;
-}
-
-.weather-label {
-    padding: 1em;
-}
