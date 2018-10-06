@@ -44,7 +44,6 @@ class WeekContainer extends React.Component {
   }
 }
 
-
 WeekContainer.propTypes = {
   weatherModels: PropTypes.arrayOf(
     PropTypes.shape({date: PropTypes.instanceOf(Date), temp: PropTypes.number, icon: PropTypes.any})

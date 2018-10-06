@@ -50,6 +50,34 @@ class OpenWeather extends WeatherService {
       })
   }
 
+  getFiveDayForecast(zipCode) {
+    if (!this.isZipCode(zipCode)) {
+      return Promise.resolve([]);
+    }
+    const query = `${this.endpoint}forecast?zip=${zipCode}&units=${this.units}&APPID=${this.apiKey}`;
+    return fetch(query)
+      .then((response) => {
+        if(!response.ok) {
+          throw new Error(response.status)
+        }
+        return response.json();
+      })
+      .then(fiveDayForecast => {
+        console.log(fiveDayForecast);
+        const daySet = new Set();
+        const fiveDayNoonForecast = [];
+        fiveDayForecast.list.forEach(day => {
+          const date = DateUtil.epochSecondsToMs(day.dt);
+          const NOON = 12;
+          if (!daySet.has(date.getDay()) && date.getHours() >= NOON) {
+            daySet.add(date.getDay());
+            fiveDayNoonForecast.push(new WeatherModel(date, day.main.temp, day.weather[0].id));
+          }
+        });
+        return fiveDayNoonForecast;
+      })
+  }
+
   isZipCode(zipCode) {
     return typeof zipCode === "string" && zipCode.length === 5;
   }
