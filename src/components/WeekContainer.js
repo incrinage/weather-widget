@@ -24,33 +24,25 @@ class WeekContainer extends React.Component {
   }
 
   render() {
-    let listItems;
-    if (this.props.isLoading) {
-      listItems =
-          Array.from(Array(5).keys()).map((index) => <li key={index}>
-            <i className="fa fa-circle-o-notch fa-spin"/>
-          </li>)
-    } else {
-      listItems = this.props.weatherModels
-          .map((weather, index) =>
-              <div key={index}>
-                <DayTile
-                    day={DateUtil.getWeekDay(weather.date.getDay())}
-                    temp={Math.round(weather.temp)}
-                    icon={this.getWeatherCondition(weather.id)}
-                />
-              </div>
-          );
-    }
 
     return (
         <div className="widget">
-           {listItems}
+           {
+             this.props.weatherModels
+                 .map((weather, index) =>
+                     <div key={index}>
+                       <DayTile
+                           day={DateUtil.getWeekDay(weather.date.getDay())}
+                           temp={Math.round(weather.temp)}
+                           icon={this.getWeatherCondition(weather.id)}
+                       />
+                     </div>
+                 )
+           }
         </div>
     );
   }
 }
-
 
 WeekContainer.propTypes = {
   weatherModels: PropTypes.arrayOf(
