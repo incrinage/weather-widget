@@ -1,5 +1,5 @@
 import WeatherService from "./WeatherService";
-import WeatherModel from "../Models/WeatherModel";
+import WeatherModel from "../models/WeatherModel";
 import DateUtil from "../DateUtil";
 
 class OpenWeather extends WeatherService {

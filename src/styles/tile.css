@@ -1,0 +1,22 @@
+.day-tile {
+    width:140px;
+    font-family: unset;
+    margin: .5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.tile {
+    border-top: 2px solid #a5adb13b;
+    border-bottom: solid #e6e0e0;
+    border-left: .7px solid #e6e0e0;
+    background-color: #fbfbfb;
+    border-radius: .2em;
+    box-shadow: 3px 4px 5px lightgray;
+}
+
+.icon {
+    padding: 1em;
+}

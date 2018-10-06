@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import DayTile from "./DayTile";
 import DateUtil from "../DateUtil";
 
-import '../CSS/WeatherContainer.css'
+import '../styles/weather.css'
 import 'font-awesome/css/font-awesome.min.css';
 
 class WeekContainer extends React.Component {
@@ -19,19 +19,17 @@ class WeekContainer extends React.Component {
     } else {
       listItems = this.props.weatherModels
           .map((weatherModel, index) =>
-              <li key={index}>
+              <div key={index}>
                 <DayTile
                     day={DateUtil.getWeekDay(weatherModel.date.getDay())}
                     temp={weatherModel.temp}/>
-              </li>
+              </div>
           );
     }
 
     return (
         <div className="widget">
-          <ul>
            {listItems}
-          </ul>
         </div>
     );
   }

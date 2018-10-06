@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
-import WeatherWidget from "./Components/WeatherWidget";
-import OpenWeather from "./Service/OpenWeather";
+import WeatherWidget from "./components/WeatherWidget";
+import OpenWeather from "./service/OpenWeather";
 
 class App extends Component {
 
