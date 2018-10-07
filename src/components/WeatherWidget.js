@@ -69,6 +69,7 @@ class WeatherWidget extends React.Component {
     return <div>Failed to get weather</div>
   }
 
+  /*
   getForecast() {
 
     const fn = () => this.props.weatherService.getNoonFiveDayForecast(this.zipCodeInput.current.value)
@@ -78,6 +79,26 @@ class WeatherWidget extends React.Component {
 
     setTimeout(fn, 300);
   }
+  */
+
+  transformToSingleIntervalPoint(forecast, interval) {
+    return forecast.map(map => map.get(interval));
+  }
+
+  getForecast() {
+    return this.props.weatherService.getFiveDayThreeHourIntervalForecast(this.zipCodeInput.current.value)
+        .then(forecast => {
+          console.log(forecast);
+
+          if (forecast === undefined) {
+            return;
+          }
+
+          this.setState({container: <WeekContainer weatherModels={ this.transformToSingleIntervalPoint(forecast, 0) }/>});
+        });
+  }
+
+
 
   handleError(error){
     //todo: handle errors here
@@ -100,7 +121,7 @@ class WeatherWidget extends React.Component {
           {this.state.container}
 
           <div style={{position: "relative"}} className="slidecontainer">
-            <input type="range" min="1" max="100" value="0" className="slider" id="myRange" onChange={this.handleSliderChange}/>
+            <input type="range" min="0" max="21" value="0" className="slider" id="myRange" onChange={this.handleSliderChange}/>
           </div>
 
         </div>

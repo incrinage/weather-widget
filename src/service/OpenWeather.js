@@ -6,6 +6,8 @@ class OpenWeather extends WeatherService {
 
   units = "imperial";
 
+  static intervalSet = new Set([0, 3, 6, 9, 12, 15, 18, 21]); //TODO: use neat javascript tricks to init this
+
   constructor(apiKey) {
     super();
     this.apiKey=apiKey;
@@ -50,9 +52,9 @@ class OpenWeather extends WeatherService {
       })
   }
 
-  getFiveDayForecast(zipCode) {
+  getFiveDayThreeHourIntervalForecast(zipCode) {
     if (!this.isZipCode(zipCode)) {
-      return Promise.resolve([]);
+      return Promise.resolve();
     }
     const query = `${this.endpoint}forecast?zip=${zipCode}&units=${this.units}&APPID=${this.apiKey}`;
     return fetch(query)
@@ -63,18 +65,46 @@ class OpenWeather extends WeatherService {
         return response.json();
       })
       .then(fiveDayForecast => {
-        console.log(fiveDayForecast);
-        const daySet = new Set();
-        const fiveDayNoonForecast = [];
+        const weatherMap = new Map(); //day of the week getDay() as unique key
         fiveDayForecast.list.forEach(day => {
-          const date = DateUtil.epochSecondsToMs(day.dt);
-          const NOON = 12;
-          if (!daySet.has(date.getDay()) && date.getHours() >= NOON) {
-            daySet.add(date.getDay());
-            fiveDayNoonForecast.push(new WeatherModel(date, day.main.temp, day.weather[0].id));
+          const date = new Date(day.dt_txt);
+          let weatherMapValue = weatherMap.get(date.getDay());
+          let curWeather = new WeatherModel(date, day.main.temp, day.weather[0].id);
+
+          if (weatherMapValue === undefined) {
+            weatherMapValue = {};
+            weatherMapValue.intervalMap = new Map();
+            const intervalMap = weatherMapValue.intervalMap;
+            intervalMap.set(date.getHours(), curWeather);
+            weatherMap.set(date.getDay(), {"dt": day.dt, "intervalMap": intervalMap});
+          } else {
+            weatherMapValue.intervalMap.set(date.getHours(), curWeather);
           }
         });
-        return fiveDayNoonForecast;
+
+        const sortedWeatherDays = Array.from(weatherMap).sort((a,b) => {
+          return a[1].dt - b[1].dt
+        }).map(item =>  { return item[1].intervalMap });
+
+        /* take care of first day not having all intervals, round earlier intervals to the nearest interval and repeat
+         * that but with actual date
+         */
+        const firstDayIntervalMapKeys = new Set(sortedWeatherDays[0].keys());
+        const difference = new Set([...OpenWeather.intervalSet]
+            .filter(interval => !(firstDayIntervalMapKeys).has(interval)));
+
+        if (difference.size > 0) {
+          const firstDayIntervalMap = sortedWeatherDays[0];
+          const minInterval = Math.min(...firstDayIntervalMapKeys);
+          const repeatedModel = firstDayIntervalMap.get(minInterval);
+          difference.forEach(interval => {
+            // minus 60 milliseconds * 60 seconds * (minInterval - <current interval>)
+            const realDate = new Date(repeatedModel.date.getTime() - (1000*60*60*(minInterval - interval)));
+            firstDayIntervalMap.set(interval, new WeatherModel(realDate, repeatedModel.temp, repeatedModel.id));
+          })
+        }
+
+        return sortedWeatherDays;
       })
   }
 
