@@ -12,6 +12,19 @@
     flex-wrap: wrap;
 }
 
+@keyframes onload-fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 100;
+    }
+}
+
+.widget-load {
+    animation: 1s ease-in 0s 1 onload-fade-in;
+}
+
 .weather-display {
     display: flex;
     flex-direction: row;
