@@ -56,6 +56,7 @@ class OpenWeather extends WeatherService {
     if (!this.isZipCode(zipCode)) {
       return Promise.resolve();
     }
+    let i = 0;
     const query = `${this.endpoint}forecast?zip=${zipCode}&units=${this.units}&APPID=${this.apiKey}`;
     return fetch(query)
       .then((response) => {

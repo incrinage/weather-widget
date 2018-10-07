@@ -10,6 +10,7 @@ import '../styles/weather.css'
 import '../styles/weather.css';
 import '../styles/tile.css';
 import 'font-awesome/css/font-awesome.min.css';
+import SliderBar from "./SliderBar";
 
 class WeatherWidget extends React.Component {
 
@@ -19,8 +20,11 @@ class WeatherWidget extends React.Component {
     this.loadingContainer = this.getLoadingContainer();
     this.errorContainer = this.getErrorContainer();
 
+    this.cachedForecast = {};
+
     this.state = {
-      container : this.loadingContainer
+      container : this.loadingContainer,
+      sliderPosition : 0
     };
 
     this.handleError = this.handleError.bind(this);
@@ -44,9 +48,11 @@ class WeatherWidget extends React.Component {
   //slider handling
 
   handleSliderChange(event) {
-    if (event.target.value >= 50) {
-      console.log(event);
+    if (event.target.value > 10) {
+      console.log("swag");
     }
+
+
   }
 
   //container JSX
@@ -86,7 +92,7 @@ class WeatherWidget extends React.Component {
   }
 
   getForecast() {
-    return this.props.weatherService.getFiveDayThreeHourIntervalForecast(this.zipCodeInput.current.value)
+    const fn = () => this.props.weatherService.getFiveDayThreeHourIntervalForecast(this.zipCodeInput.current.value)
         .then(forecast => {
           console.log(forecast);
 
@@ -94,8 +100,13 @@ class WeatherWidget extends React.Component {
             return;
           }
 
-          this.setState({container: <WeekContainer weatherModels={ this.transformToSingleIntervalPoint(forecast, 0) }/>});
+          this.cachedForecast = forecast;
+
+          this.setState({container: <WeekContainer weatherModels={ this.transformToSingleIntervalPoint(forecast,
+                this.state.sliderPosition) }/>});
         });
+
+    setTimeout(fn, 300);
   }
 
 
@@ -120,9 +131,7 @@ class WeatherWidget extends React.Component {
 
           {this.state.container}
 
-          <div style={{position: "relative"}} className="slidecontainer">
-            <input type="range" min="0" max="21" value="0" className="slider" id="myRange" onChange={this.handleSliderChange}/>
-          </div>
+          <SliderBar onSliderChange={this.handleSliderChange}/>
 
         </div>
     );
