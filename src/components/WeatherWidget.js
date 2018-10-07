@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import WeekContainer from "./WeekContainer";
 import WeatherService from "../service/WeatherService";
 
-import '../styles/slider.css'
-
 import '../styles/weather.css'
 import '../styles/weather.css';
 import '../styles/tile.css';

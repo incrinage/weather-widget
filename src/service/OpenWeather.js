@@ -1,6 +1,5 @@
 import WeatherService from "./WeatherService";
 import WeatherModel from "../models/WeatherModel";
-import DateUtil from "../DateUtil";
 
 class OpenWeather extends WeatherService {
 
@@ -55,8 +54,6 @@ class OpenWeather extends WeatherService {
 
         this.populateMissingIntervals(sortedWeatherDays);
 
-        console.log(sortedWeatherDays);
-
         return sortedWeatherDays;
       })
   }
@@ -84,8 +81,9 @@ class OpenWeather extends WeatherService {
         throw new Error("bound must be set to MIN or MAX.");
     }
 
-    const difference = new Set([...OpenWeather.intervalSet]
-        .filter(interval => !(intervalMapKeys).has(interval)));
+    const difference = new Set(
+        [...OpenWeather.intervalSet]
+            .filter(interval => !(intervalMapKeys).has(interval)));
 
     if (difference.size > 0) {
       const boundInterval = boundIntervalFn(...intervalMapKeys);
