@@ -25,9 +25,8 @@ class WeekContainer extends React.Component {
 
   render() {
     return (
-        <div className="widget">
+        <div className="widget widget-load">
            {
-
              this.props.weatherModels
                  .map((weather, index) =>
                      <div key={index}>
