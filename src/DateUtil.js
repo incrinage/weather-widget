@@ -8,4 +8,8 @@ export default class DateUtil {
   static getWeekDay(num) {
     return this.days[num];
   }
+
+  static dateZeroPadding(num){
+    return num < 10? `0${num}`: num;
+  }
 }

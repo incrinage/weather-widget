@@ -35,6 +35,7 @@ class WeekContainer extends React.Component {
                            day={DateUtil.getWeekDay(weather.date.getDay())}
                            temp={Math.round(weather.temp)}
                            icon={this.getWeatherCondition(weather.id)}
+                           time={weather.date}
                        />
                      </div>
                  )
