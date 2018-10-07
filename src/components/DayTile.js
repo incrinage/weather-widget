@@ -2,6 +2,7 @@ import React from "react"
 import PropTypes from 'prop-types'
 import '../styles/tile.css'
 import '../styles/label.css'
+import DateUtil from '../DateUtil';
 
 class DayTile extends React.Component {
 
@@ -9,8 +10,8 @@ class DayTile extends React.Component {
     const time = this.props.time;
     const month = time.getMonth() + 1;
     const dayOfMonth = time.getDate();
-    const hours = time.getHours() < 10 ? `0${time.getHours()}`: time.getHours();
-    const mins = time.getMinutes() < 10? `0${time.getMinutes()}`: time.getMinutes();
+    const hours = DateUtil.dateZeroPadding(time.getHours());
+    const minutes = DateUtil.dateZeroPadding(time.getMinutes());
     return (
       <div className="tile day-tile">
         <span>
@@ -21,7 +22,7 @@ class DayTile extends React.Component {
           <img src={this.props.icon} alt="sunny"/>
         </div>
         <div className="label label__margin-bottom--fold label__font weather-date-label">
-            {`${hours}:${mins}`}
+            {`${hours}:${minutes}`}
         </div>
       </div>
     )
