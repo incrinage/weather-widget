@@ -44,7 +44,7 @@
     transition: .1s linear;
 }
 
-.tile:hover {
+.day-tile:hover {
     border-color: #b8cedb;
     transition: .1s linear;
 }
