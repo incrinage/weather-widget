@@ -11,15 +11,15 @@ import weather from '../svg';
 class WeekContainer extends React.Component {
   // condition codes used:
   // https://openweathermap.org/weather-conditions
-  getWeatherCondition(id){
+  getWeatherCondition(id, hours) {
     if(id>= 801 && id <= 804 ){
-      return weather.cloudy;
+      return hours >= 18 ? weather.cloudyNight : weather.cloudyDay;
     } else if ( id === 800) {
-      return weather.sunny;
+      return hours >= 18 ? weather.night : weather.sunny;
     } else if(id >= 500 && id <= 531){
       return weather.rain;
     } else {
-      return weather.cloudy;
+      return weather.cloudyDay;
     }
   }
 
@@ -32,10 +32,10 @@ class WeekContainer extends React.Component {
                  .map((weather, index) =>
                      <div key={index}>
                        <DayTile
-                           day={DateUtil.getWeekDay(weather.date.getDay())}
-                           temp={Math.round(weather.temp)}
-                           icon={this.getWeatherCondition(weather.id)}
-                           time={weather.date}
+                         day={DateUtil.getWeekDay(weather.date.getDay())}
+                         temp={Math.round(weather.temp)}
+                         icon={this.getWeatherCondition(weather.id, weather.date.getHours())}
+                         time={weather.date}
                        />
                      </div>
                  )
