@@ -26,6 +26,25 @@
    padding-left: 25px;
 }
 
+.weather-day-label {
+    width: 115px;
+}
+
+.weather-date-label {
+    width: 50px
+}
+
 .weather-input {
     width: 100px;
+    outline:none
+}
+
+.weather-input:hover {
+    border-color: #b8cedb;
+    transition: .1s linear;
+}
+
+.tile:hover {
+    border-color: #b8cedb;
+    transition: .1s linear;
 }
