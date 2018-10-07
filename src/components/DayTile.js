@@ -15,13 +15,13 @@ class DayTile extends React.Component {
     return (
       <div className="tile day-tile">
         <span>
-          <div className="label label__margin-top--fold label__font weather-day-label">{`${this.props.day} ${month}/${dayOfMonth}`}</div>
+          <div className="label weather-label__margin-top--fold label__font weather-day-label">{`${this.props.day} ${month}/${dayOfMonth}`}</div>
         </span>
         <div className="weather-display">
           <div className="weather-label weather-label__font" >{this.props.temp}</div>
           <img src={this.props.icon} alt="sunny"/>
         </div>
-        <div className="label label__margin-bottom--fold label__font weather-date-label">
+        <div className="label weather-label__top label__font weather-date-label">
             {`${hours}:${minutes}`}
         </div>
       </div>
