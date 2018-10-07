@@ -36,8 +36,7 @@ class OpenWeather extends WeatherService {
           let curWeather = new WeatherModel(date, day.main.temp, day.weather[0].id);
 
           if (weatherMapValue === undefined) {
-            weatherMapValue = {};
-            weatherMapValue.intervalMap = new Map();
+            weatherMapValue = {intervalMap: new Map()};
             const intervalMap = weatherMapValue.intervalMap;
             intervalMap.set(date.getHours(), curWeather);
             weatherMap.set(date.getDay(), {"dt": day.dt, "intervalMap": intervalMap});
