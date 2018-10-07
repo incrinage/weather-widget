@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../styles/slider.scss'
+import '../styles/slider.css'
 import PropTypes from "prop-types";
 
 class SliderBar extends React.Component {
@@ -16,9 +16,9 @@ class SliderBar extends React.Component {
   }
 
   render() {
-    return  <div style={{position: "relative"}} className="slidecontainer">
+    return  <div className="slider-container">
       <input type="range"
-             className="container"
+             className="slider"
              min="0" max="21"
              step="3"
              defaultValue="12"
