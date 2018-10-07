@@ -10,6 +10,7 @@ import '../styles/weather.css'
 import '../styles/weather.css';
 import '../styles/tile.css';
 import 'font-awesome/css/font-awesome.min.css';
+import SliderBar from "./SliderBar";
 
 class WeatherWidget extends React.Component {
 
@@ -19,8 +20,11 @@ class WeatherWidget extends React.Component {
     this.loadingContainer = this.getLoadingContainer();
     this.errorContainer = this.getErrorContainer();
 
+    this.cachedForecast = [];
+
     this.state = {
-      container : this.loadingContainer
+      container : this.loadingContainer,
+      sliderPosition : 0
     };
 
     this.handleError = this.handleError.bind(this);
@@ -29,6 +33,7 @@ class WeatherWidget extends React.Component {
     this.handleZipCodeSubmit = this.handleZipCodeSubmit.bind(this);
 
     this.handleSliderChange = this.handleSliderChange.bind(this);
+    this.transformToSingleIntervalPoint = this.transformToSingleIntervalPoint.bind(this);
   }
 
   componentDidMount() {
@@ -44,10 +49,16 @@ class WeatherWidget extends React.Component {
   //slider handling
 
   handleSliderChange(event) {
-    if (event.target.value >= 50) {
-      console.log(event);
+    const forecast = this.transformToSingleIntervalPoint(event.target.value);
+    if (forecast.length !== 0) {
+      this.setState({
+        container: <WeekContainer
+            weatherModels={forecast}/>
+      });
     }
   }
+
+
 
   //container JSX
 
@@ -81,21 +92,33 @@ class WeatherWidget extends React.Component {
   }
   */
 
-  transformToSingleIntervalPoint(forecast, interval) {
-    return forecast.map(map => map.get(interval));
+  transformToSingleIntervalPoint(interval) {
+    const arr = [];
+    this.cachedForecast.forEach(map => {
+      const weather = map.get(parseInt(interval));
+      if (weather === undefined) {
+        return;
+      }
+      arr.push(weather);
+    });
+    return arr;
   }
 
   getForecast() {
-    return this.props.weatherService.getFiveDayThreeHourIntervalForecast(this.zipCodeInput.current.value)
+    const fn = () => this.props.weatherService.getFiveDayThreeHourIntervalForecast(this.zipCodeInput.current.value)
         .then(forecast => {
-          console.log(forecast);
-
           if (forecast === undefined) {
             return;
           }
 
-          this.setState({container: <WeekContainer weatherModels={ this.transformToSingleIntervalPoint(forecast, 0) }/>});
+          this.cachedForecast = forecast;
+
+          this.setState({container: <WeekContainer
+                weatherModels={ this.transformToSingleIntervalPoint(this.state.sliderPosition) }/>
+          });
         });
+
+    setTimeout(fn, 300);
   }
 
 
@@ -120,9 +143,7 @@ class WeatherWidget extends React.Component {
 
           {this.state.container}
 
-          <div style={{position: "relative"}} className="slidecontainer">
-            <input type="range" min="0" max="21" value="0" className="slider" id="myRange" onChange={this.handleSliderChange}/>
-          </div>
+          <SliderBar onSliderChange={this.handleSliderChange}/>
 
         </div>
     );
