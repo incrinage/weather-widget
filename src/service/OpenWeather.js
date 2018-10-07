@@ -28,7 +28,6 @@ class OpenWeather extends WeatherService {
         return response.json();
       })
       .then(fiveDayForecast => {
-        console.log(fiveDayForecast);
         const weatherMap = new Map(); //day of the week getDay() as unique key
         fiveDayForecast.list.forEach(day => {
           const date = new Date(day.dt_txt);
@@ -54,8 +53,6 @@ class OpenWeather extends WeatherService {
          */
 
         this.populateMissingIntervals(sortedWeatherDays);
-
-        console.log(sortedWeatherDays);
 
         return sortedWeatherDays;
       })
