@@ -64,14 +64,8 @@ class WeatherWidget extends React.Component {
 
   getLoadingContainer() {
     return (
-            <div id="containerDiv" className="weather-widget">
-              <ul style={{ listStyleType: "none" }}>
-                {
-                  Array.from(Array(5).keys()).map((index) => <li style={{float: "left"}} key={index}>
-                    <i className="fa fa-circle-o-notch fa-spin" style={{fontSize: "24px"}}/>
-                  </li>)
-                }
-              </ul>
+            <div className="weather-widget">
+              <i className="fa fa-circle-o-notch fa-spin" style={{fontSize: "24px"}}/>
             </div>
         );
   }
@@ -107,7 +101,7 @@ class WeatherWidget extends React.Component {
           this.setState({container: <WeekContainer
                 weatherModels={ this.transformToSingleIntervalPoint(this.state.sliderPosition) }/>
           });
-        });
+        }, this.handleError);
 
     setTimeout(fn, 300);
   }

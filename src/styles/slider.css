@@ -1,5 +1,9 @@
 .slider-container {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .slider {
@@ -27,4 +31,8 @@
 
 .slider:focus {
     outline: none;
+}
+
+.slider-label {
+    border-radius: 15px;
 }

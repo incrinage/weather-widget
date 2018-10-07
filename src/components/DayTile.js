@@ -10,8 +10,6 @@ class DayTile extends React.Component {
     const time = this.props.time;
     const month = time.getMonth() + 1;
     const dayOfMonth = time.getDate();
-    const hours = DateUtil.dateZeroPadding(time.getHours());
-    const minutes = DateUtil.dateZeroPadding(time.getMinutes());
     return (
       <div className="tile day-tile">
         <span>
@@ -20,9 +18,6 @@ class DayTile extends React.Component {
         <div className="weather-display">
           <div className="weather-label weather-label__font" >{this.props.temp}</div>
           <img src={this.props.icon} alt="sunny"/>
-        </div>
-        <div className="label weather-label__top label__font weather-date-label">
-            {`${hours}:${minutes}`}
         </div>
       </div>
     )
