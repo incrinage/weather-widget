@@ -20,7 +20,7 @@ class WeatherWidget extends React.Component {
     this.loadingContainer = this.getLoadingContainer();
     this.errorContainer = this.getErrorContainer();
 
-    this.cachedForecast = {};
+    this.cachedForecast = [];
 
     this.state = {
       container : this.loadingContainer,
@@ -33,6 +33,7 @@ class WeatherWidget extends React.Component {
     this.handleZipCodeSubmit = this.handleZipCodeSubmit.bind(this);
 
     this.handleSliderChange = this.handleSliderChange.bind(this);
+    this.transformToSingleIntervalPoint = this.transformToSingleIntervalPoint.bind(this);
   }
 
   componentDidMount() {
@@ -48,12 +49,16 @@ class WeatherWidget extends React.Component {
   //slider handling
 
   handleSliderChange(event) {
-    if (event.target.value > 10) {
-      console.log("swag");
+    const forecast = this.transformToSingleIntervalPoint(event.target.value);
+    if (forecast.length !== 0) {
+      this.setState({
+        container: <WeekContainer
+            weatherModels={forecast}/>
+      });
     }
-
-
   }
+
+
 
   //container JSX
 
@@ -87,23 +92,30 @@ class WeatherWidget extends React.Component {
   }
   */
 
-  transformToSingleIntervalPoint(forecast, interval) {
-    return forecast.map(map => map.get(interval));
+  transformToSingleIntervalPoint(interval) {
+    const arr = [];
+    this.cachedForecast.forEach(map => {
+      const weather = map.get(parseInt(interval));
+      if (weather === undefined) {
+        return;
+      }
+      arr.push(weather);
+    });
+    return arr;
   }
 
   getForecast() {
     const fn = () => this.props.weatherService.getFiveDayThreeHourIntervalForecast(this.zipCodeInput.current.value)
         .then(forecast => {
-          console.log(forecast);
-
           if (forecast === undefined) {
             return;
           }
 
           this.cachedForecast = forecast;
 
-          this.setState({container: <WeekContainer weatherModels={ this.transformToSingleIntervalPoint(forecast,
-                this.state.sliderPosition) }/>});
+          this.setState({container: <WeekContainer
+                weatherModels={ this.transformToSingleIntervalPoint(this.state.sliderPosition) }/>
+          });
         });
 
     setTimeout(fn, 300);

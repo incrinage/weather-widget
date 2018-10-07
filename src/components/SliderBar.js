@@ -14,9 +14,7 @@ class SliderBar extends React.Component {
   }
 
   handleSliderChange(event) {
-    if (event.target.value >= 10) {
-      console.log("swag");
-    }
+    this.props.onSliderChange(event);
   }
 
   render() {
@@ -24,7 +22,8 @@ class SliderBar extends React.Component {
       <input type="range"
              className="slider" id="myRange"
              min="0" max="21"
-             value={this.state.position}  onChange={this.props.onSliderChange} />
+             defaultValue="0"
+             onChange={this.handleSliderChange} />
       </div>
   }
 }
