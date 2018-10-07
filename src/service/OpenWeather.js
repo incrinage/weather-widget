@@ -1,6 +1,5 @@
 import WeatherService from "./WeatherService";
 import WeatherModel from "../models/WeatherModel";
-import DateUtil from "../DateUtil";
 
 class OpenWeather extends WeatherService {
 
@@ -29,6 +28,7 @@ class OpenWeather extends WeatherService {
         return response.json();
       })
       .then(fiveDayForecast => {
+        console.log(fiveDayForecast);
         const weatherMap = new Map(); //day of the week getDay() as unique key
         fiveDayForecast.list.forEach(day => {
           const date = new Date(day.dt_txt);
@@ -85,8 +85,9 @@ class OpenWeather extends WeatherService {
         throw new Error("bound must be set to MIN or MAX.");
     }
 
-    const difference = new Set([...OpenWeather.intervalSet]
-        .filter(interval => !(intervalMapKeys).has(interval)));
+    const difference = new Set(
+        [...OpenWeather.intervalSet]
+            .filter(interval => !(intervalMapKeys).has(interval)));
 
     if (difference.size > 0) {
       const boundInterval = boundIntervalFn(...intervalMapKeys);
