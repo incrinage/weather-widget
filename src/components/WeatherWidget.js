@@ -7,6 +7,8 @@ import WeatherService from "../service/WeatherService";
 import '../styles/slider.css'
 
 import '../styles/weather.css'
+import '../styles/weather.css';
+import '../styles/tile.css';
 import 'font-awesome/css/font-awesome.min.css';
 
 class WeatherWidget extends React.Component {
@@ -33,8 +35,6 @@ class WeatherWidget extends React.Component {
     this.getForecast();
   }
 
-  //zipcode handling
-
   handleZipCodeSubmit(event) {
     this.getForecast();
     this.setState({container : this.loadingContainer});
@@ -53,7 +53,7 @@ class WeatherWidget extends React.Component {
 
   getLoadingContainer() {
     return (
-            <div id="containerDiv">
+            <div id="containerDiv" className="weather-widget">
               <ul style={{ listStyleType: "none" }}>
                 {
                   Array.from(Array(5).keys()).map((index) => <li style={{float: "left"}} key={index}>
@@ -114,7 +114,7 @@ class WeatherWidget extends React.Component {
             <form
                 onSubmit={this.handleZipCodeSubmit}
             >
-              <input type="text"  defaultValue="98007" ref={this.zipCodeInput} />
+              <input  className="tile tile-input weather-input" type="text"  defaultValue="98007" ref={this.zipCodeInput} />
             </form>
           </div>
 

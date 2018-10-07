@@ -17,6 +17,13 @@
     box-shadow: 3px 4px 5px lightgray;
 }
 
+.tile-input {
+    border-radius: 10px;
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
 .icon {
     padding: 1em;
 }
