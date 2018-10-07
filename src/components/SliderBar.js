@@ -2,8 +2,6 @@ import React from 'react';
 
 import '../styles/slider.css'
 import PropTypes from "prop-types";
-import WeatherService from "../service/WeatherService";
-import WeatherWidget from "./WeatherWidget";
 
 class SliderBar extends React.Component {
 
@@ -20,9 +18,10 @@ class SliderBar extends React.Component {
   render() {
     return  <div style={{position: "relative"}} className="slidecontainer">
       <input type="range"
-             className="slider" id="myRange"
+             className="slider tile" id="myRange"
              min="0" max="21"
-             defaultValue="0"
+             step="3"
+             defaultValue="12"
              onChange={this.handleSliderChange} />
       </div>
   }
