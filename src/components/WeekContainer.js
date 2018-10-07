@@ -24,10 +24,10 @@ class WeekContainer extends React.Component {
   }
 
   render() {
-
     return (
         <div className="widget">
            {
+
              this.props.weatherModels
                  .map((weather, index) =>
                      <div key={index}>

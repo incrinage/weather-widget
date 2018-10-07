@@ -20,7 +20,7 @@ class WeatherWidget extends React.Component {
     this.loadingContainer = this.getLoadingContainer();
     this.errorContainer = this.getErrorContainer();
 
-    this.cachedForecast = [];
+    this.cachedIntervalForecast = [];
 
     this.state = {
       container : this.loadingContainer,
@@ -50,15 +50,17 @@ class WeatherWidget extends React.Component {
 
   handleSliderChange(event) {
     const forecast = this.transformToSingleIntervalPoint(event.target.value);
-    if (forecast.length !== 0) {
-      this.setState({
-        container: <WeekContainer
-            weatherModels={forecast}/>
-      });
+
+    if (forecast.length === 0) {
+      return;
     }
+
+    this.setState({
+      container: <WeekContainer
+          weatherModels={forecast}/>
+    });
+
   }
-
-
 
   //container JSX
 
@@ -80,26 +82,17 @@ class WeatherWidget extends React.Component {
     return <div>Failed to get weather</div>
   }
 
-  /*
-  getForecast() {
-
-    const fn = () => this.props.weatherService.getNoonFiveDayForecast(this.zipCodeInput.current.value)
-        .then(forecast => {
-          this.setState({container: <WeekContainer weatherModels={forecast}/>});
-        }, this.handleError);
-
-    setTimeout(fn, 300);
-  }
-  */
-
   transformToSingleIntervalPoint(interval) {
     const arr = [];
-    this.cachedForecast.forEach(map => {
+    this.cachedIntervalForecast.forEach(map => {
       const weather = map.get(parseInt(interval));
-      if (weather === undefined) {
+
+      if (weather === undefined) { //if any intervals are not in sync, returns.
         return;
       }
+
       arr.push(weather);
+
     });
     return arr;
   }
@@ -111,7 +104,7 @@ class WeatherWidget extends React.Component {
             return;
           }
 
-          this.cachedForecast = forecast;
+          this.cachedIntervalForecast = forecast;
 
           this.setState({container: <WeekContainer
                 weatherModels={ this.transformToSingleIntervalPoint(this.state.sliderPosition) }/>
@@ -120,8 +113,6 @@ class WeatherWidget extends React.Component {
 
     setTimeout(fn, 300);
   }
-
-
 
   handleError(error){
     //todo: handle errors here

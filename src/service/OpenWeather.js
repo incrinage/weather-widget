@@ -7,6 +7,8 @@ class OpenWeather extends WeatherService {
   units = "imperial";
 
   static intervalSet = new Set([0, 3, 6, 9, 12, 15, 18, 21]); //TODO: use neat javascript tricks to init this
+  static MIN = 0;
+  static MAX = 1;
 
   constructor(apiKey) {
     super();
@@ -14,49 +16,10 @@ class OpenWeather extends WeatherService {
     this.endpoint = 'http://api.openweathermap.org/data/2.5/';
   }
 
-  getCurrentWeather(zipCode) {
-    if(!this.isZipCode(zipCode)){
-      return Promise.resolve([]);
-    }
-    const query = `${this.endpoint}weather?zip=${zipCode}&units=${this.units}&APPID=${this.apiKey}`
-    return fetch(query)
-      .then(response => response.json())
-      .then(weather => new WeatherModel(DateUtil.epochSecondsToMs(weather.dt), weather.main.temp))
-  }
-
-  getNoonFiveDayForecast(zipCode) {
-    if (!this.isZipCode(zipCode)) {
-      return Promise.resolve([]);
-    }
-    const query = `${this.endpoint}forecast?zip=${zipCode}&units=${this.units}&APPID=${this.apiKey}`;
-    return fetch(query)
-      .then((response) => {
-        if(!response.ok) {
-          throw new Error(response.status)
-        }
-        return response.json();
-      })
-      .then(fiveDayForecast => {
-        console.log(fiveDayForecast);
-        const daySet = new Set();
-        const fiveDayNoonForecast = [];
-        fiveDayForecast.list.forEach(day => {
-          const date = DateUtil.epochSecondsToMs(day.dt);
-          const NOON = 12;
-          if (!daySet.has(date.getDay()) && date.getHours() >= NOON) {
-            daySet.add(date.getDay());
-            fiveDayNoonForecast.push(new WeatherModel(date, day.main.temp, day.weather[0].id));
-          }
-        });
-        return fiveDayNoonForecast;
-      })
-  }
-
   getFiveDayThreeHourIntervalForecast(zipCode) {
     if (!this.isZipCode(zipCode)) {
       return Promise.resolve();
     }
-    let i = 0;
     const query = `${this.endpoint}forecast?zip=${zipCode}&units=${this.units}&APPID=${this.apiKey}`;
     return fetch(query)
       .then((response) => {
@@ -87,26 +50,53 @@ class OpenWeather extends WeatherService {
           return a[1].dt - b[1].dt
         }).map(item =>  { return item[1].intervalMap });
 
-        /* take care of first day not having all intervals, round earlier intervals to the nearest interval and repeat
-         * that but with actual date
+        /* take care of first and last day not having all intervals, round earlier intervals to the nearest interval
+         * and repeat that temp but with actual date
          */
-        const firstDayIntervalMapKeys = new Set(sortedWeatherDays[0].keys());
-        const difference = new Set([...OpenWeather.intervalSet]
-            .filter(interval => !(firstDayIntervalMapKeys).has(interval)));
 
-        if (difference.size > 0) {
-          const firstDayIntervalMap = sortedWeatherDays[0];
-          const minInterval = Math.min(...firstDayIntervalMapKeys);
-          const repeatedModel = firstDayIntervalMap.get(minInterval);
-          difference.forEach(interval => {
-            // minus 60 milliseconds * 60 seconds * (minInterval - <current interval>)
-            const realDate = new Date(repeatedModel.date.getTime() - (1000*60*60*(minInterval - interval)));
-            firstDayIntervalMap.set(interval, new WeatherModel(realDate, repeatedModel.temp, repeatedModel.id));
-          })
-        }
+        this.populateMissingIntervals(sortedWeatherDays);
+
+        console.log(sortedWeatherDays);
 
         return sortedWeatherDays;
       })
+  }
+
+  populateMissingIntervals(sortedWeatherDays) {
+    this.populateDayMissingIntervals(sortedWeatherDays, OpenWeather.MIN);
+    this.populateDayMissingIntervals(sortedWeatherDays, OpenWeather.MAX);
+  }
+
+  populateDayMissingIntervals(sortedWeatherDays, bound) {
+    let intervalMap, intervalMapKeys, boundIntervalFn;
+
+    switch (bound) {
+      case OpenWeather.MIN:
+        intervalMap = sortedWeatherDays[0];
+        intervalMapKeys = new Set(intervalMap.keys());
+        boundIntervalFn = Math.min;
+        break;
+      case OpenWeather.MAX:
+        intervalMap = sortedWeatherDays[sortedWeatherDays.length - 1];
+        intervalMapKeys = new Set(intervalMap.keys());
+        boundIntervalFn = Math.max;
+        break;
+      default:
+        throw new Error("bound must be set to MIN or MAX.");
+    }
+
+    const difference = new Set([...OpenWeather.intervalSet]
+        .filter(interval => !(intervalMapKeys).has(interval)));
+
+    if (difference.size > 0) {
+      const boundInterval = boundIntervalFn(...intervalMapKeys);
+      const repeatedModel = intervalMap.get(boundInterval);
+      difference.forEach(interval => {
+        // minus 60 milliseconds * 60 seconds * (<MIN or MAX>Interval - <current interval>)
+        const realDate = new Date(repeatedModel.date.getTime() - (1000*60*60*(boundInterval - interval)));
+        intervalMap.set(interval, new WeatherModel(realDate, repeatedModel.temp, repeatedModel.id));
+      })
+    }
   }
 
   isZipCode(zipCode) {
