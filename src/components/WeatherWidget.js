@@ -77,7 +77,7 @@ class WeatherWidget extends React.Component {
   transformToSingleIntervalPoint(interval) {
     const arr = [];
     this.cachedIntervalForecast.forEach(map => {
-      const weather = map.get(parseInt(interval));
+      const weather = map.get(parseInt(interval, 10));
 
       if (weather === undefined) { //if any intervals are not in sync, returns.
         return;

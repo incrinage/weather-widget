@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../styles/slider.css'
 import PropTypes from "prop-types";
-import DateUtil from "../DateUtil";
+import CommonUtil from "../CommonUtil";
 
 class SliderBar extends React.Component {
 
@@ -13,7 +13,7 @@ class SliderBar extends React.Component {
   }
 
   handleSliderChange(event) {
-    this.hour = `${DateUtil.dateZeroPadding(event.target.value)}:00`;
+    this.hour = `${CommonUtil.dateZeroPadding(event.target.value)}:00`;
     this.props.onSliderChange(event);
   }
 
