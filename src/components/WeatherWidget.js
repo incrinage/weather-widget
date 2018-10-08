@@ -22,7 +22,7 @@ class WeatherWidget extends React.Component {
 
     this.state = {
       container : this.loadingContainer,
-      sliderPosition : 0
+      sliderPosition : "0"
     };
 
     this.handleError = this.handleError.bind(this);
@@ -47,7 +47,8 @@ class WeatherWidget extends React.Component {
   //slider handling
 
   handleSliderChange(event) {
-    const forecast = this.transformToSingleIntervalPoint(event.target.value);
+    const val = event.target.value;
+    const forecast = this.transformToSingleIntervalPoint(val);
 
     if (forecast.length === 0) {
       return;
@@ -55,12 +56,10 @@ class WeatherWidget extends React.Component {
 
     this.setState({
       container: <WeekContainer
-          weatherModels={forecast}/>
+          weatherModels={forecast}/>,
+      sliderPosition: val
     });
-
   }
-
-  //container JSX
 
   getLoadingContainer() {
     return (
@@ -112,9 +111,8 @@ class WeatherWidget extends React.Component {
   }
 
   render() {
-
     return (
-        <div className="weather-widget">
+        <div className="weather-widget widget-load">
 
           <div style={{position : "relative"}}>
             <form
@@ -126,7 +124,7 @@ class WeatherWidget extends React.Component {
 
           {this.state.container}
 
-          <SliderBar onSliderChange={this.handleSliderChange}/>
+          <SliderBar position={this.state.sliderPosition} onSliderChange={this.handleSliderChange}/>
 
         </div>
     );

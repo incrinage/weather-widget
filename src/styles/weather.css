@@ -1,15 +1,15 @@
-.widget-container {
-    display: flex;
-    justify-content: space-around;
-    padding: 1em;
-    flex-wrap: wrap;
-}
-
 .weather-widget {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 3em;
+}
+
+.weather-widget-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 1em;
+    flex-wrap: wrap;
 }
 
 @keyframes onload-fade-in {
