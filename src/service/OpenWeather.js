@@ -16,9 +16,8 @@ class OpenWeather extends WeatherService {
   }
 
   getFiveDayThreeHourIntervalForecast(zipCode) {
-    if (!this.isZipCode(zipCode)) {
-      return Promise.resolve();
-    }
+    this.validateZipCode(zipCode);
+
     const query = `${this.endpoint}forecast?zip=${zipCode}&units=${this.units}&APPID=${this.apiKey}`;
     return fetch(query)
       .then((response) => {
@@ -96,8 +95,11 @@ class OpenWeather extends WeatherService {
     }
   }
 
-  isZipCode(zipCode) {
-    return typeof zipCode === "string" && zipCode.length === 5;
+  validateZipCode(zipCode) {
+    const isZipCode = zipCode.length === 5;
+    if(!isZipCode){
+      Promise.reject('400');
+    }
   }
 }
 

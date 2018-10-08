@@ -75,6 +75,7 @@
 
 .day-tile {
     width:140px;
+    height: 80px;
     margin: .5em;
     display: flex;
     flex-direction: column;
@@ -85,4 +86,11 @@
 .day-tile:hover {
     border-color: #b8cedb;
     transition: .1s linear;
+}
+
+.error-tile {
+    font-size: 50px;
+    padding-top: 20px;
+    color: #56a0eeab;
+    overflow: hidden;
 }

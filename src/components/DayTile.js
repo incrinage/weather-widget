@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import CommonUtil from "../CommonUtil";
 import WeatherModel from "../models/WeatherModel";
+import Tile from "./Tile";
 
 import '../styles/tile.css'
 import '../styles/label.css'
@@ -15,7 +16,7 @@ function DayTile(props) {
   const dayOfMonth = date.getDate();
 
   return (
-    <div className="tile day-tile">
+    <Tile className="day-tile">
       <span>
         <div className="label weather-label__margin-top--fold label__font weather-day-label">
           {`${CommonUtil.getWeekDay(date.getDay())} ${month}/${dayOfMonth}`}
@@ -25,7 +26,7 @@ function DayTile(props) {
         <div className="weather-label weather-label__font" >{Math.round(weather.temp)}</div>
         <img src={CommonUtil.getWeatherCondition(weather.id, date.getHours())} alt="sunny"/>
       </div>
-    </div>
+    </Tile>
   )
 
 }
