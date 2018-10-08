@@ -5,10 +5,10 @@ import WeekContainer from "./WeekContainer";
 import WeatherService from "../service/WeatherService";
 
 import '../styles/weather.css'
-import '../styles/weather.css';
 import '../styles/tile.css';
 import 'font-awesome/css/font-awesome.min.css';
 import SliderBar from "./SliderBar";
+import Tile from "./Tile";
 
 class WeatherWidget extends React.Component {
 
@@ -16,8 +16,6 @@ class WeatherWidget extends React.Component {
     super(props);
 
     this.loadingContainer = this.getLoadingContainer();
-    this.errorContainer = this.getErrorContainer();
-
     this.cachedIntervalForecast = [];
 
     this.state = {
@@ -69,8 +67,14 @@ class WeatherWidget extends React.Component {
         );
   }
 
-  getErrorContainer() {
-    return <div>Failed to get weather</div>
+  getErrorContainer(error) {
+    return (
+      <Tile className="day-tile error-tile">
+        <div>
+          {error.message}
+        </div>
+      </Tile>
+    )
   }
 
   transformToSingleIntervalPoint(interval) {
@@ -107,7 +111,7 @@ class WeatherWidget extends React.Component {
 
   handleError(error){
     //todo: handle errors here
-    this.setState({container: this.errorContainer});
+    this.setState({container: this.getErrorContainer(error)});
   }
 
   render() {
