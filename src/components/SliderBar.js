@@ -8,7 +8,6 @@ class SliderBar extends React.Component {
 
   constructor(props) {
     super(props);
-    this.hour = "12:00";
     this.handleSliderChange = this.handleSliderChange.bind(this);
   }
 
@@ -27,7 +26,7 @@ class SliderBar extends React.Component {
                className="slider"
                min="0" max="21"
                step="3"
-               defaultValue={this.hour}
+               value={this.props.position}
                onChange={this.handleSliderChange} />
       </div>
     </div>
@@ -35,6 +34,7 @@ class SliderBar extends React.Component {
 }
 
 SliderBar.propTypes = {
+  position: PropTypes.string.isRequired,
   onSliderChange: PropTypes.func.isRequired
 };
 
