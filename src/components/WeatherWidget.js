@@ -21,7 +21,7 @@ class WeatherWidget extends React.Component {
 
     this.state = {
       container : this.loadingContainer,
-      isLoading: true,
+      hasData: false,
       sliderPosition : "0"
     };
 
@@ -107,7 +107,7 @@ class WeatherWidget extends React.Component {
 
           this.setState({container: <WeekContainer className="widget-load"
                 weatherModels={ this.transformToSingleIntervalPoint(this.state.sliderPosition) }/>
-            , isLoading: false
+            , hasData: true
           });
         }, this.handleError);
 
@@ -116,7 +116,7 @@ class WeatherWidget extends React.Component {
 
   handleError(error){
     //todo: handle errors here
-    this.setState({container: this.getErrorContainer(error), isLoading: true});
+    this.setState({container: this.getErrorContainer(error), hasData: false});
   }
 
   render() {
@@ -133,7 +133,7 @@ class WeatherWidget extends React.Component {
           {this.state.container}
 
           {
-            !this.state.isLoading &&
+            this.state.hasData &&
             (<div className="slider-group widget-load">
             <div className="label label__font weather-date-label slider-label">
               {`${CommonUtil.dateZeroPadding(this.state.sliderPosition)}:00`}
