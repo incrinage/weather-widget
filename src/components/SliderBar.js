@@ -12,23 +12,17 @@ class SliderBar extends React.Component {
   }
 
   handleSliderChange(event) {
-    this.hour = `${CommonUtil.dateZeroPadding(event.target.value)}:00`;
     this.props.onSliderChange(event);
   }
 
   render() {
     return  <div className="slider-container">
-      <div className="label label__font weather-date-label slider-label">
-        {this.hour}
-      </div>
-      <div>
         <input type="range"
                className="slider"
                min="0" max="21"
                step="3"
                value={this.props.position}
                onChange={this.handleSliderChange} />
-      </div>
     </div>
   }
 }
