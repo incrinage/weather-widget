@@ -8,7 +8,7 @@ import 'font-awesome/css/font-awesome.min.css';
 
 function WeekContainer(props) {
   return (
-      <div className="weather-widget-container">
+      <div className={`weather-widget-container ${props.className}`} >
          {
            props.weatherModels
                .map((weather, index) =>

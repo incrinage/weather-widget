@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from 'prop-types'
 
-import CommonUtil from "../CommonUtil";
+import CommonUtil from "../util/CommonUtil";
 import WeatherModel from "../models/WeatherModel";
 import Tile from "./Tile";
 

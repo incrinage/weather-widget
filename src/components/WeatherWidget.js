@@ -9,7 +9,7 @@ import '../styles/tile.css';
 import 'font-awesome/css/font-awesome.min.css';
 import SliderBar from "./SliderBar";
 import Tile from "./Tile";
-import CommonUtil from "../CommonUtil";
+import CommonUtil from "../util/CommonUtil";
 
 class WeatherWidget extends React.Component {
 
@@ -21,6 +21,7 @@ class WeatherWidget extends React.Component {
 
     this.state = {
       container : this.loadingContainer,
+      isLoading: true,
       sliderPosition : "0"
     };
 
@@ -39,7 +40,7 @@ class WeatherWidget extends React.Component {
 
   handleZipCodeSubmit(event) {
     this.getForecast();
-    this.setState({container : this.loadingContainer});
+    this.setState({container: this.loadingContainer,});
     event.preventDefault();
   }
 
@@ -63,7 +64,9 @@ class WeatherWidget extends React.Component {
   getLoadingContainer() {
     return (
             <div className="weather-widget-container">
-              <i className="fa fa-circle-o-notch fa-spin" style={{fontSize: "24px"}}/>
+              <div className="weather-loading-container">
+                <i className="fa fa-circle-o-notch fa-spin" style={{fontSize: "24px"}}/>
+              </div>
             </div>
         );
   }
@@ -93,7 +96,7 @@ class WeatherWidget extends React.Component {
     return arr;
   }
 
-  getForecast(timeout = 0) {
+  getForecast(timeout = 1000) {
     const fn = () => this.props.weatherService.getFiveDayThreeHourIntervalForecast(this.zipCodeInput.current.value)
         .then(forecast => {
           if (forecast === undefined) {
@@ -102,8 +105,9 @@ class WeatherWidget extends React.Component {
 
           this.cachedIntervalForecast = forecast;
 
-          this.setState({container: <WeekContainer
+          this.setState({container: <WeekContainer className="widget-load"
                 weatherModels={ this.transformToSingleIntervalPoint(this.state.sliderPosition) }/>
+            , isLoading: false
           });
         }, this.handleError);
 
@@ -112,31 +116,35 @@ class WeatherWidget extends React.Component {
 
   handleError(error){
     //todo: handle errors here
-    this.setState({container: this.getErrorContainer(error)});
+    this.setState({container: this.getErrorContainer(error), isLoading: true});
   }
 
   render() {
     return (
         <div className="weather-widget widget-load">
-
-          <div style={{position : "relative"}}>
-            <form
-                onSubmit={this.handleZipCodeSubmit}
-            >
-              <input  className="tile tile-input weather-input" type="text"  defaultValue="98007" ref={this.zipCodeInput} />
+          <form onSubmit={this.handleZipCodeSubmit}>
+            <input className="tile tile-input weather-input"
+                   type="text"
+                   defaultValue="98007"
+                   placeholder="zipcode"
+                   ref={this.zipCodeInput}/>
             </form>
-          </div>
 
           {this.state.container}
-          <div className="slider-group">
+
+          {
+            !this.state.isLoading &&
+            (<div className="slider-group widget-load">
             <div className="label label__font weather-date-label slider-label">
               {`${CommonUtil.dateZeroPadding(this.state.sliderPosition)}:00`}
             </div>
             <div>
-          <SliderBar position={this.state.sliderPosition} onSliderChange={this.handleSliderChange}/>
+              <SliderBar position={this.state.sliderPosition} onSliderChange={this.handleSliderChange}/>
             </div>
-          </div>
+            </div>)
+          }
         </div>
+
     );
   }
 }
