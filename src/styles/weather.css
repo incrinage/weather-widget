@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     padding: 3em;
+    flex-wrap: wrap;
 }
 
 .weather-widget-container {
@@ -23,6 +24,10 @@
 
 .widget-load {
     animation: 1s ease-in 0s 1 onload-fade-in;
+}
+
+.weather-loading-container {
+    margin: 37px;
 }
 
 .weather-display {
@@ -86,6 +91,13 @@
 .day-tile:hover {
     border-color: #b8cedb;
     transition: .1s linear;
+}
+
+.slider-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .error-tile {

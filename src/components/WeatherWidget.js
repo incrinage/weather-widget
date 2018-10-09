@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from "prop-types";
 
+import CommonUtil from "../util/CommonUtil";
+import MockWeatherService from "../service/MockWeatherService";
+import SliderBar from "./SliderBar";
+import Tile from "./Tile";
 import WeekContainer from "./WeekContainer";
 import WeatherService from "../service/WeatherService";
 
 import '../styles/weather.css'
 import '../styles/tile.css';
 import 'font-awesome/css/font-awesome.min.css';
-import SliderBar from "./SliderBar";
-import Tile from "./Tile";
-import MockWeatherService from "../service/MockWeatherService";
 
 class WeatherWidget extends React.Component {
 
@@ -21,6 +22,7 @@ class WeatherWidget extends React.Component {
 
     this.state = {
       container : this.loadingContainer,
+      hasData: false,
       sliderPosition : "0"
     };
 
@@ -39,7 +41,7 @@ class WeatherWidget extends React.Component {
 
   handleZipCodeSubmit(event) {
     this.getForecast();
-    this.setState({container : this.loadingContainer});
+    this.setState({container: this.loadingContainer, hasData: false});
     event.preventDefault();
   }
 
@@ -62,8 +64,10 @@ class WeatherWidget extends React.Component {
 
   getLoadingContainer() {
     return (
-            <div className="weather-widget">
-              <i className="fa fa-circle-o-notch fa-spin" style={{fontSize: "24px"}}/>
+            <div className="weather-widget-container">
+              <div className="weather-loading-container">
+                <i className="fa fa-circle-o-notch fa-spin" style={{fontSize: "24px"}}/>
+              </div>
             </div>
         );
   }
@@ -93,7 +97,7 @@ class WeatherWidget extends React.Component {
     return arr;
   }
 
-  getForecast() {
+  getForecast(timeout = 1000) {
     const fn = () => this.props.weatherService.getFiveDayThreeHourIntervalForecast(this.zipCodeInput.current.value)
         .then(forecast => {
           if (forecast === undefined) {
@@ -102,36 +106,46 @@ class WeatherWidget extends React.Component {
 
           this.cachedIntervalForecast = forecast;
 
-          this.setState({container: <WeekContainer
+          this.setState({container: <WeekContainer className="widget-load"
                 weatherModels={ this.transformToSingleIntervalPoint(this.state.sliderPosition) }/>
+            , hasData: true
           });
         }, this.handleError);
 
-    setTimeout(fn, 300);
+    setTimeout(fn, timeout);
   }
 
   handleError(error){
     //todo: handle errors here
-    this.setState({container: this.getErrorContainer(error)});
+    this.setState({container: this.getErrorContainer(error), hasData: false});
   }
 
   render() {
     return (
         <div className="weather-widget widget-load">
-
-          <div style={{position : "relative"}}>
-            <form
-                onSubmit={this.handleZipCodeSubmit}
-            >
-              <input  className="tile tile-input weather-input" type="text"  defaultValue="98007" ref={this.zipCodeInput} />
+          <form onSubmit={this.handleZipCodeSubmit}>
+            <input className="tile tile-input weather-input"
+                   type="text"
+                   defaultValue="98007"
+                   placeholder="zipcode"
+                   ref={this.zipCodeInput}/>
             </form>
-          </div>
 
           {this.state.container}
 
-          <SliderBar position={this.state.sliderPosition} onSliderChange={this.handleSliderChange}/>
-
+          {
+            this.state.hasData &&
+            (<div className="slider-group widget-load">
+            <div className="label label__font weather-date-label slider-label">
+              {`${CommonUtil.dateZeroPadding(this.state.sliderPosition)}:00`}
+            </div>
+            <div>
+              <SliderBar position={this.state.sliderPosition} onSliderChange={this.handleSliderChange}/>
+            </div>
+            </div>)
+          }
         </div>
+
     );
   }
 }

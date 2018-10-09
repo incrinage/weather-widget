@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './App.css';
+import './styles/App.css';
 import WeatherWidget from "./components/WeatherWidget";
 import MockWeatherService from "./service/MockWeatherService";
 
@@ -12,9 +12,17 @@ class App extends Component {
     this.weatherService = new MockWeatherService();
   }
 
+  renderKeyInput() {
+    return (
+      <input className="tile tile-input">
+    </input>
+    )
+  }
+
   render() {
     return (
       <div className="App">
+        {this.renderKeyInput()}
         <WeatherWidget
             weatherService={this.weatherService}
         />

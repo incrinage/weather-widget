@@ -1,4 +1,4 @@
-import weather from "./svg";
+import weather from "../svg/index";
 
 export default class CommonUtil {
 
