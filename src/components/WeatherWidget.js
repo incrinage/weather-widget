@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from "prop-types";
 
+import CommonUtil from "../util/CommonUtil";
+import MockWeatherService from "../service/MockWeatherService";
+import SliderBar from "./SliderBar";
+import Tile from "./Tile";
 import WeekContainer from "./WeekContainer";
 import WeatherService from "../service/WeatherService";
 
 import '../styles/weather.css'
 import '../styles/tile.css';
 import 'font-awesome/css/font-awesome.min.css';
-import SliderBar from "./SliderBar";
-import Tile from "./Tile";
-import CommonUtil from "../util/CommonUtil";
 
 class WeatherWidget extends React.Component {
 
@@ -151,6 +152,10 @@ class WeatherWidget extends React.Component {
 
 WeatherWidget.propTypes = {
   weatherService: PropTypes.instanceOf(WeatherService).isRequired
+};
+
+WeatherWidget.defaultProps = {
+  weatherService: new MockWeatherService()
 };
 
 export default WeatherWidget;
