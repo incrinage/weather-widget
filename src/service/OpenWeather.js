@@ -53,7 +53,6 @@ class OpenWeather extends WeatherService {
 
         this.populateMissingIntervals(sortedWeatherDays);
 
-        console.log(sortedWeatherDays);
         return sortedWeatherDays;
       })
   }
