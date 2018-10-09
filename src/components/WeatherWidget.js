@@ -34,11 +34,11 @@ class WeatherWidget extends React.Component {
   }
 
   componentDidMount() {
-    this.getForecast(0);
+    this.getForecast();
   }
 
   handleZipCodeSubmit(event) {
-    this.getForecast(0);
+    this.getForecast();
     this.setState({container : this.loadingContainer});
     event.preventDefault();
   }
@@ -93,7 +93,7 @@ class WeatherWidget extends React.Component {
     return arr;
   }
 
-  getForecast(timeout) {
+  getForecast(timeout = 0) {
     const fn = () => this.props.weatherService.getFiveDayThreeHourIntervalForecast(this.zipCodeInput.current.value)
         .then(forecast => {
           if (forecast === undefined) {

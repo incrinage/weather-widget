@@ -2,7 +2,6 @@ import React from 'react';
 
 import '../styles/slider.css'
 import PropTypes from "prop-types";
-import CommonUtil from "../CommonUtil";
 
 class SliderBar extends React.Component {
 
