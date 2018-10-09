@@ -9,6 +9,7 @@ import '../styles/tile.css';
 import 'font-awesome/css/font-awesome.min.css';
 import SliderBar from "./SliderBar";
 import Tile from "./Tile";
+import MockWeatherService from "../service/MockWeatherService";
 
 class WeatherWidget extends React.Component {
 
@@ -137,6 +138,10 @@ class WeatherWidget extends React.Component {
 
 WeatherWidget.propTypes = {
   weatherService: PropTypes.instanceOf(WeatherService).isRequired
+};
+
+WeatherWidget.defaultProps = {
+  weatherService: new MockWeatherService()
 };
 
 export default WeatherWidget;

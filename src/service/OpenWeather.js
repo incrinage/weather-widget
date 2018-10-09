@@ -53,6 +53,7 @@ class OpenWeather extends WeatherService {
 
         this.populateMissingIntervals(sortedWeatherDays);
 
+        console.log(sortedWeatherDays);
         return sortedWeatherDays;
       })
   }
@@ -96,10 +97,11 @@ class OpenWeather extends WeatherService {
   }
 
   validateZipCode(zipCode) {
-    const isZipCode = zipCode.length === 5;
-    if(!isZipCode){
-      Promise.reject('400');
+
+    if (super.validateZipCode(zipCode)) {
+      return;
     }
+    Promise.reject('400');
   }
 }
 
