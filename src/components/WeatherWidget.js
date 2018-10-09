@@ -21,7 +21,6 @@ class WeatherWidget extends React.Component {
 
     this.state = {
       container : this.loadingContainer,
-      hasData: false,
       sliderPosition : "0"
     };
 
@@ -40,7 +39,7 @@ class WeatherWidget extends React.Component {
 
   handleZipCodeSubmit(event) {
     this.getForecast();
-    this.setState({container: this.loadingContainer, hasData: false});
+    this.setState({container: this.loadingContainer});
     event.preventDefault();
   }
 
@@ -96,18 +95,32 @@ class WeatherWidget extends React.Component {
     return arr;
   }
 
+  getWeekContainer() {
+    return (
+      <div>
+        <WeekContainer className="widget-load"
+                       weatherModels={this.transformToSingleIntervalPoint(this.state.sliderPosition)}/>
+        <div className="slider-group widget-load">
+          <div className="label label__font weather-date-label slider-label">
+            {`${CommonUtil.dateZeroPadding(this.state.sliderPosition)}:00`}
+          </div>
+          <div>
+            <SliderBar position={this.state.sliderPosition} onSliderChange={this.handleSliderChange}/>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   getForecast(timeout = 1000) {
     const fn = () => this.props.weatherService.getFiveDayThreeHourIntervalForecast(this.zipCodeInput.current.value)
         .then(forecast => {
           if (forecast === undefined) {
             return;
           }
-
           this.cachedIntervalForecast = forecast;
-
-          this.setState({container: <WeekContainer className="widget-load"
-                weatherModels={ this.transformToSingleIntervalPoint(this.state.sliderPosition) }/>
-            , hasData: true
+          this.setState({
+            container: this.getWeekContainer()
           });
         }, this.handleError);
 
@@ -116,7 +129,7 @@ class WeatherWidget extends React.Component {
 
   handleError(error){
     //todo: handle errors here
-    this.setState({container: this.getErrorContainer(error), hasData: false});
+    this.setState({container: this.getErrorContainer(error)});
   }
 
   render() {
@@ -127,24 +140,11 @@ class WeatherWidget extends React.Component {
                    type="text"
                    defaultValue="98007"
                    placeholder="zipcode"
-                   ref={this.zipCodeInput}/>
+                   ref={this.zipCodeInput}
+            />
             </form>
-
           {this.state.container}
-
-          {
-            this.state.hasData &&
-            (<div className="slider-group widget-load">
-            <div className="label label__font weather-date-label slider-label">
-              {`${CommonUtil.dateZeroPadding(this.state.sliderPosition)}:00`}
-            </div>
-            <div>
-              <SliderBar position={this.state.sliderPosition} onSliderChange={this.handleSliderChange}/>
-            </div>
-            </div>)
-          }
         </div>
-
     );
   }
 }
