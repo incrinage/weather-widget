@@ -10,6 +10,7 @@
     justify-content: space-around;
     padding: 1em;
     flex-wrap: wrap;
+    height:100px;
 }
 
 @keyframes onload-fade-in {
@@ -86,6 +87,13 @@
 .day-tile:hover {
     border-color: #b8cedb;
     transition: .1s linear;
+}
+
+.slider-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .error-tile {
