@@ -55,8 +55,7 @@ class WeatherWidget extends React.Component {
     }
 
     this.setState({
-      container: <WeekContainer
-          weatherModels={forecast}/>,
+      container: this.getWeekContainer(forecast),
       sliderPosition: val
     });
   }
@@ -96,11 +95,11 @@ class WeatherWidget extends React.Component {
     return arr;
   }
 
-  getWeekContainer() {
+  getWeekContainer(forecast) {
     return (
       <div>
         <WeekContainer className="widget-load"
-                       weatherModels={this.transformToSingleIntervalPoint(this.state.sliderPosition)}/>
+                       weatherModels={forecast}/>
         <div className="slider-group widget-load">
           <div className="label label__font weather-date-label slider-label">
             {`${CommonUtil.dateZeroPadding(this.state.sliderPosition)}:00`}
@@ -121,7 +120,7 @@ class WeatherWidget extends React.Component {
           }
           this.cachedIntervalForecast = forecast;
           this.setState({
-            container: this.getWeekContainer()
+            container: this.getWeekContainer(this.transformToSingleIntervalPoint(forecast))
           });
         }, this.handleError);
 
