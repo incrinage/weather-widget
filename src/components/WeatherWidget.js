@@ -120,7 +120,7 @@ class WeatherWidget extends React.Component {
           }
           this.cachedIntervalForecast = forecast;
           this.setState({
-            container: this.getWeekContainer(this.transformToSingleIntervalPoint(forecast))
+            container: this.getWeekContainer(this.transformToSingleIntervalPoint(this.state.sliderPosition))
           });
         }, this.handleError);
 
