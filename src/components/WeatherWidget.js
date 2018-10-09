@@ -40,7 +40,7 @@ class WeatherWidget extends React.Component {
 
   handleZipCodeSubmit(event) {
     this.getForecast();
-    this.setState({container: this.loadingContainer,});
+    this.setState({container: this.loadingContainer, hasData: false});
     event.preventDefault();
   }
 
