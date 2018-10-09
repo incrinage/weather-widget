@@ -21,7 +21,7 @@ class WeatherWidget extends React.Component {
     this.cachedIntervalForecast = [];
 
     this.state = {
-      container : this.loadingContainer,
+      container : undefined,
       sliderPosition : "0"
     };
 
@@ -112,7 +112,7 @@ class WeatherWidget extends React.Component {
     );
   }
 
-  getForecast(timeout = 1000) {
+  getForecast() {
     const fn = () => this.props.weatherService.getFiveDayThreeHourIntervalForecast(this.zipCodeInput.current.value)
         .then(forecast => {
           if (forecast === undefined) {
@@ -124,7 +124,7 @@ class WeatherWidget extends React.Component {
           });
         }, this.handleError);
 
-    setTimeout(fn, timeout);
+    setTimeout(fn, 300);
   }
 
   handleError(error){
