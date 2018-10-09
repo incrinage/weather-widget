@@ -9,6 +9,7 @@ import '../styles/tile.css';
 import 'font-awesome/css/font-awesome.min.css';
 import SliderBar from "./SliderBar";
 import Tile from "./Tile";
+import CommonUtil from "../CommonUtil";
 
 class WeatherWidget extends React.Component {
 
@@ -61,7 +62,7 @@ class WeatherWidget extends React.Component {
 
   getLoadingContainer() {
     return (
-            <div className="weather-widget">
+            <div className="weather-widget-container">
               <i className="fa fa-circle-o-notch fa-spin" style={{fontSize: "24px"}}/>
             </div>
         );
@@ -92,7 +93,7 @@ class WeatherWidget extends React.Component {
     return arr;
   }
 
-  getForecast() {
+  getForecast(timeout = 0) {
     const fn = () => this.props.weatherService.getFiveDayThreeHourIntervalForecast(this.zipCodeInput.current.value)
         .then(forecast => {
           if (forecast === undefined) {
@@ -106,7 +107,7 @@ class WeatherWidget extends React.Component {
           });
         }, this.handleError);
 
-    setTimeout(fn, 300);
+    setTimeout(fn, timeout);
   }
 
   handleError(error){
@@ -127,9 +128,14 @@ class WeatherWidget extends React.Component {
           </div>
 
           {this.state.container}
-
+          <div className="slider-group">
+            <div className="label label__font weather-date-label slider-label">
+              {`${CommonUtil.dateZeroPadding(this.state.sliderPosition)}:00`}
+            </div>
+            <div>
           <SliderBar position={this.state.sliderPosition} onSliderChange={this.handleSliderChange}/>
-
+            </div>
+          </div>
         </div>
     );
   }
