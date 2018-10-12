@@ -7,24 +7,15 @@ import OpenWeather from "./service/OpenWeather";
 
 class App extends Component {
 
-
   constructor(props){
     super(props);
-    this.weatherService = new OpenWeather("4b04e27d6c643f40448d5ab0e2411300");
-    // this.weatherService = new MockWeatherService();
-  }
-
-  renderKeyInput() {
-    return (
-      <input className="tile tile-input">
-    </input>
-    )
+    const apiKey = localStorage.getItem("apiKey");
+    this.weatherService = apiKey? new OpenWeather(apiKey) : new MockWeatherService() ;
   }
 
   render() {
     return (
       <div className="App">
-        {this.renderKeyInput()}
         <WeatherWidget
             weatherService={this.weatherService}
         />

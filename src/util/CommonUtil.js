@@ -2,14 +2,11 @@ import weather from "../svg/index";
 
 export default class CommonUtil {
 
-  //date helpers
-
   static days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].reduce(function(result, day, index) {
     result[index] = day;
     return result;
   }, {});
 
-  //gets the day for the weekday
   static getWeekDay(num) {
     return this.days[num];
   }
@@ -17,8 +14,6 @@ export default class CommonUtil {
   static dateZeroPadding(num){
     return num < 10? `0${num}`: num;
   }
-
-  //weather helpers
 
   // condition codes used:
   // https://openweathermap.org/weather-conditions

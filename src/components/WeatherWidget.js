@@ -22,7 +22,7 @@ class WeatherWidget extends React.Component {
 
     this.state = {
       container : undefined,
-      sliderPosition : "0"
+      sliderPosition : 0
     };
 
     this.handleError = this.handleError.bind(this);
@@ -44,20 +44,16 @@ class WeatherWidget extends React.Component {
     event.preventDefault();
   }
 
-  //slider handling
-
   handleSliderChange(event) {
-    const val = event.target.value;
+    const val = parseInt(event.target.value, 10);
     const forecast = this.transformToSingleIntervalPoint(val);
 
     if (forecast.length === 0) {
       return;
     }
 
-    const weekContainer = this.getWeekContainer(forecast, val);
-
     this.setState({
-      container: weekContainer,
+      container: this.getWeekContainer(forecast, val),
       sliderPosition: val
     });
   }
@@ -121,8 +117,9 @@ class WeatherWidget extends React.Component {
             return;
           }
           this.cachedIntervalForecast = forecast;
+          const intervalPoint = this.transformToSingleIntervalPoint(this.state.sliderPosition);
           this.setState({
-            container: this.getWeekContainer(this.transformToSingleIntervalPoint(this.state.sliderPosition), this.state.sliderPosition)
+            container: this.getWeekContainer(intervalPoint, this.state.sliderPosition)
           });
         }, this.handleError);
 
