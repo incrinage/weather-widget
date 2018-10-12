@@ -5,6 +5,6 @@ export default function Tile(props) {
     <div className={`tile ${props.className}`}>
       {props.children}
     </div>
-  )
+  );
 
 }

@@ -27,7 +27,7 @@ class SliderBar extends React.Component {
 }
 
 SliderBar.propTypes = {
-  position: PropTypes.string.isRequired,
+  position: PropTypes.number.isRequired,
   onSliderChange: PropTypes.func.isRequired
 };
 
