@@ -1,12 +1,14 @@
-import WeatherService from "./WeatherService";
-import WeatherModel from "../models/WeatherModel";
+import WeatherService from './WeatherService';
+import WeatherModel from '../models/WeatherModel';
 
 class OpenWeather extends WeatherService {
+  units = 'imperial';
+  
+  // TODO: use neat javascript tricks to init this
+  static intervalSet = new Set([0, 3, 6, 9, 12, 15, 18, 21]);
 
-  units = "imperial";
-
-  static intervalSet = new Set([0, 3, 6, 9, 12, 15, 18, 21]); //TODO: use neat javascript tricks to init this
   static MIN = 0;
+
   static MAX = 1;
 
   constructor(apiKey) {
@@ -25,15 +27,15 @@ class OpenWeather extends WeatherService {
       })
       .then(this.fetchWeather)
       .then(this.populateWeatherModels)
-      .then(this.populateMissingIntervals)
+      .then(this.populateMissingIntervals);
   }
 
-  fetchWeather(query){
+  fetchWeather(query) {
     return fetch(query)
       .then((response) => {
         // todo: provide status codes where needed to handle errors gracefully
         if (!response.ok) {
-          throw new Error(response.status)
+          throw new Error(response.status);
         }
         return response.json();
       });
@@ -41,23 +43,23 @@ class OpenWeather extends WeatherService {
 
   populateWeatherModels(fiveDayForecast) {
     return Promise.resolve(fiveDayForecast)
-      .then(fiveDayForecast => {
-        const weatherMap = new Map(); //day of the week getDay() as unique key
-        fiveDayForecast.list.forEach(day => {
+      .then((fiveDayForecast) => {
+        const weatherMap = new Map(); // day of the week getDay() as unique key
+        fiveDayForecast.list.forEach((day) => {
           const date = new Date(day.dt_txt);
           let weatherMapValue = weatherMap.get(date.getDay());
-          let curWeather = new WeatherModel(date, day.main.temp, day.weather[0].id);
+          const curWeather = new WeatherModel(date, day.main.temp, day.weather[0].id);
           if (weatherMapValue === undefined) {
-            weatherMapValue = {intervalMap: new Map()};
+            weatherMapValue = { intervalMap: new Map() };
             const intervalMap = weatherMapValue.intervalMap;
             intervalMap.set(date.getHours(), curWeather);
-            weatherMap.set(date.getDay(), {"dt": day.dt, "intervalMap": intervalMap});
+            weatherMap.set(date.getDay(), { dt: day.dt, intervalMap });
           } else {
             weatherMapValue.intervalMap.set(date.getHours(), curWeather);
           }
         });
         return weatherMap;
-      })
+      });
   }
 
   populateMissingIntervals(weatherMap) {
@@ -75,11 +77,12 @@ class OpenWeather extends WeatherService {
       this.populateDayMissingIntervals(sortedWeatherDays, OpenWeather.MIN);
       this.populateDayMissingIntervals(sortedWeatherDays, OpenWeather.MAX);
       return sortedWeatherDays;
-    })
+    });
   }
 
   populateDayMissingIntervals(sortedWeatherDays, bound) {
-    let intervalMap, intervalMapKeys, boundIntervalFn;
+    let intervalMap; let intervalMapKeys; let
+      boundIntervalFn;
 
     switch (bound) {
       case OpenWeather.MIN:
@@ -93,27 +96,28 @@ class OpenWeather extends WeatherService {
         boundIntervalFn = Math.max;
         break;
       default:
-        throw new Error("bound must be set to MIN or MAX.");
+        throw new Error('bound must be set to MIN or MAX.');
     }
 
     const difference = new Set(
       [...OpenWeather.intervalSet]
-        .filter(interval => !(intervalMapKeys).has(interval)));
+        .filter(interval => !(intervalMapKeys).has(interval)),
+    );
 
     if (difference.size > 0) {
       const boundInterval = boundIntervalFn(...intervalMapKeys);
       const repeatedModel = intervalMap.get(boundInterval);
-      difference.forEach(interval => {
+      difference.forEach((interval) => {
         // minus 60 milliseconds * 60 seconds * (<MIN or MAX>Interval - <current interval>)
         const realDate = new Date(repeatedModel.date.getTime() - (1000 * 60 * 60 * (boundInterval - interval)));
         intervalMap.set(interval, new WeatherModel(realDate, repeatedModel.temp, repeatedModel.id));
-      })
+      });
     }
   }
 
   validateZipCode(zipCode) {
     if (!super.validateZipCode(zipCode)) {
-      throw new Error("404");
+      throw new Error('404');
     }
   }
 }

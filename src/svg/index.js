@@ -4,4 +4,6 @@ import rain from './rainy-5.svg';
 import cloudyNight from './cloudy-night-3.svg';
 import night from './night.svg';
 
-export default {sunny, cloudyDay, rain, cloudyNight, night};
+export default {
+  sunny, cloudyDay, rain, cloudyNight, night,
+};
