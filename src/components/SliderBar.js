@@ -1,10 +1,9 @@
 import React from 'react';
 
-import '../styles/slider.css'
-import PropTypes from "prop-types";
+import '../styles/slider.css';
+import PropTypes from 'prop-types';
 
 class SliderBar extends React.Component {
-
   constructor(props) {
     super(props);
     this.handleSliderChange = this.handleSliderChange.bind(this);
@@ -15,20 +14,25 @@ class SliderBar extends React.Component {
   }
 
   render() {
-    return  <div className="slider-container">
-        <input type="range"
-               className="slider"
-               min="0" max="21"
-               step="3"
-               value={this.props.position}
-               onChange={this.handleSliderChange} />
-    </div>
+    return (
+      <div className="slider-container">
+        <input
+          type="range"
+          className="slider"
+          min="0"
+          max="21"
+          step="3"
+          value={this.props.position}
+          onChange={this.handleSliderChange}
+        />
+      </div>
+    );
   }
 }
 
 SliderBar.propTypes = {
   position: PropTypes.number.isRequired,
-  onSliderChange: PropTypes.func.isRequired
+  onSliderChange: PropTypes.func.isRequired,
 };
 
 export default SliderBar;
